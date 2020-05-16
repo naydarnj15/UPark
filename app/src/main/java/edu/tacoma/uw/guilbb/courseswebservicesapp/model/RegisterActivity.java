@@ -57,7 +57,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         //final Member thisMember = (Member) getIntent().getSerializableExtra(ParkingDetailFragment.ARG_ITEM_ID);
 
-        final Bundle args = new Bundle();
 
         final EditText firstNameEditText = this.findViewById(R.id.add_first_name);
         final EditText lastNameEditText = this.findViewById(R.id.add_last_name);
@@ -66,19 +65,11 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText passwordEditText = this.findViewById(R.id.add_password);
 
 
-
-        Log.e(TAG, "running");
-
         Button registerButton = this.findViewById(R.id.btn_register);
         View.OnClickListener registerButtonOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                args.putString("first", RegisterActivity.this.findViewById(R.id.add_first_name).toString());
-                args.putString("last", RegisterActivity.this.findViewById(R.id.add_last_name).toString());
-                args.putString("email", RegisterActivity.this.findViewById(R.id.add_email).toString());
-                args.putString("username", RegisterActivity.this.findViewById(R.id.add_username).toString());
-                args.putString("password", RegisterActivity.this.findViewById(R.id.add_password).toString());
                 Log.e(TAG, "adding member...");
                 String firstName = firstNameEditText.getText().toString();
                 String lastName = lastNameEditText.getText().toString();
@@ -86,7 +77,6 @@ public class RegisterActivity extends AppCompatActivity {
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
 
-                Member thisMember = (Member) args.getSerializable("item_id");
                 Log.i(TAG, "first name is:");
                 Log.i(TAG, firstName);
                 registerMember(firstName,
@@ -101,17 +91,6 @@ public class RegisterActivity extends AppCompatActivity {
         registerButton.setOnClickListener (registerButtonOnClickListener);
 
     }
-
-//    @Override
-//    public void register(){
-////        mSharedPreferences
-////                .edit()
-////                .putBoolean(getString(R.string.LOGGEDIN), true)
-////                .commit();
-//        Intent i = new Intent(this, ParkingListActivity.class);
-//        startActivity(i);
-//        finish();
-//    }
 
     private class RegisterMemberAsyncTask extends AsyncTask<String, Void, String> {
         @Override
