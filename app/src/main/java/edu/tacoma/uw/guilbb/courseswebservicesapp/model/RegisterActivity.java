@@ -143,6 +143,8 @@ public class RegisterActivity extends AppCompatActivity {
                 if (jsonObject.getBoolean("success")) {
                     Toast.makeText(getApplicationContext(), "Course Added successfully"
                             , Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(RegisterActivity.this, SignInActivity.class);
+                    startActivity(intent);
                 }
                 else {
                     Toast.makeText(getApplicationContext(), "Course couldn't be added: "
@@ -174,6 +176,7 @@ public class RegisterActivity extends AppCompatActivity {
             mMemberJSON.put(Member.PASSWORD, password);
             mMemberJSON.put(Member.USERNAME, username);
             new RegisterActivity.RegisterMemberAsyncTask().execute(url.toString());
+
 
         }catch (JSONException e){
             Toast.makeText(this, "Error with JSON creation on adding a course: "
