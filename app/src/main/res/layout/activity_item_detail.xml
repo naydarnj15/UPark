@@ -12,14 +12,14 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height"
+        android:layout_height="60dp"
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="70dp"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
@@ -63,7 +63,8 @@
             android:id="@+id/add_course_prereqs_yes"
             android:layout_width="207dp"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
+            android:background="#800080"
+            android:textColor="#E8D3A2"
             android:text="Yes" />
 
         <Button
@@ -71,32 +72,32 @@
             android:layout_width="201dp"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:background="#FFFFFF"
+            android:textColor="#E8D3A2"
+            android:background="#800080"
             android:text="No" />
 
     </TableRow>
 
+
     <TextView
         android:id="@+id/textViewEmptyParking"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="9dp"
         android:gravity="center"
-        android:textColor="#E8D3A2"
         android:text="Does the parking area have ANY empty parking spaces?"
-        app:layout_anchor="@+id/tableRow"
-        app:layout_anchorGravity="top|center" />
-
-
+        android:textColor="#E8D3A2"
+        app:layout_anchor="@+id/tableRow" />
 
     <TextView
         android:id="@+id/textViewHandicap"
         android:layout_width="wrap_content"
         android:layout_height="79dp"
         android:gravity="center"
-        android:textColor="#E8D3A2"
         android:text="Does the parking area have ANY empty handicap parking spaces?"
+        android:textColor="#E8D3A2"
         app:layout_anchor="@+id/tableRow"
-        app:layout_anchorGravity="bottom|center" />
+        app:layout_anchorGravity="center" />
 
     <Button
         android:id="@+id/add_course_shortdesc_no"
@@ -104,8 +105,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:text="No"
-        android:background="#FFFFFF"
+        android:textColor="#E8D3A2"
         app:layout_anchor="@+id/tableRow"
+        android:background="#800080"
         app:layout_anchorGravity="bottom|center" />
 
     <Button
@@ -113,7 +115,8 @@
         android:layout_width="206dp"
         android:layout_height="wrap_content"
         android:text="Yes"
-        android:background="#FFFFFF"
+        android:background="#800080"
+        android:textColor="#E8D3A2"
         app:layout_anchor="@+id/tableRow"
         app:layout_anchorGravity="bottom|left" />
 
