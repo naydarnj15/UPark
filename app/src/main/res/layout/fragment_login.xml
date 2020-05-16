@@ -4,12 +4,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#800080"
     tools:context=".LoginFragment">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:fontFamily="casual"
+        android:lineSpacingExtra="8sp"
+        android:text="UPark"
+        android:textColor="#E8D3A2"
+        android:textSize="36dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:typeface="serif" />
 
     <EditText
         android:id="@+id/email_address_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="25dp"
+        android:background="#FFFFFF"
         android:hint="@string/enter_your_email_hint"
         android:inputType="textEmailAddress" />
 
@@ -18,6 +37,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/enter_your_password_hint"
+        android:background="#FFFFFF"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="25dp"
         android:inputType="textPassword" />
 
     <Button
@@ -25,11 +47,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
+        android:background="#E8D3A2"
+        android:layout_marginBottom="15dp"
         android:text="@string/btn_sign_in" />
 
     <Button
         android:id="@+id/btn_create_acc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#E8D3A2"
+        android:layout_marginBottom="15dp"
         android:text="@string/btn_create_acc" />
+
+
 </LinearLayout>
