@@ -71,6 +71,8 @@ public class ParkingDetailFragment extends Fragment {
                     activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
                 appBarLayout.setTitle(mItem.getmCourseId());
+
+
             }
         }
     }
@@ -84,18 +86,18 @@ public class ParkingDetailFragment extends Fragment {
         if (mItem != null) {
             longdesc = ((TextView) rootView.findViewById(R.id.item_detail_long_desc));
             longdesc.setText(
-                    mItem.getmCourseLongDesc());
+                    mItem.getmCourseLongDesc() + "$/hr");
 
             shortdesc =((TextView) rootView.findViewById(R.id.item_detail_short_desc));
             shortdesc.setText(
-                    mItem.getmCourseShortDesc());
+                    "Handicap parking?: " + mItem.getmCourseShortDesc());
 
             id = ((TextView) rootView.findViewById(R.id.item_detail_id));
             id.setText(
                     mItem.getmCourseId());
 
             prereqs = ((TextView) rootView.findViewById(R.id.item_detail_prereqs));
-            prereqs.setText(
+            prereqs.setText("Empty spots?: " +
                     mItem.getmCoursePrereqs());
 
         }
@@ -121,16 +123,16 @@ public class ParkingDetailFragment extends Fragment {
         public void run() {
 
             if (mItem != null) {
-                longdesc.setText( mItem.getmCourseLongDesc());
+                longdesc.setText( mItem.getmCourseLongDesc()+ "$/hr");
 
-                shortdesc.setText(
+                shortdesc.setText("Handicap parking?: " +
                         mItem.getmCourseShortDesc());
 
                 id.setText(
                         mItem.getmCourseId());
 
                 prereqs.setText(
-                        mItem.getmCoursePrereqs());
+                        "Empty spots?: " +mItem.getmCoursePrereqs());
 
             }
             Toast.makeText(getActivity().getApplicationContext(), "REFRESH!!" + mItem.getmCoursePrereqs(), Toast.LENGTH_SHORT).show();

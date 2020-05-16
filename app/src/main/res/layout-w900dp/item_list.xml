@@ -16,11 +16,10 @@
     This layout is a two-pane layout for the Items master/detail flow.
     -->
 
-    <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/item_list"
         android:name="edu.tacoma.uw.guilbb.courseswebservicesapp.ItemListFragment"
-        android:layout_width="@dimen/item_width"
+        android:layout_width="453dp"
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
@@ -30,7 +29,7 @@
 
     <FrameLayout
         android:id="@+id/item_detail_container"
-        android:layout_width="0dp"
+        android:layout_width="814dp"
         android:layout_height="match_parent"
         android:layout_weight="3" />
 
