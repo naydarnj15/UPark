@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ParkingAddFragment">
+    <EditText
+        android:id="@+id/add_course_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_course_id_hint" />
+    <EditText
+        android:id="@+id/add_course_short_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_course_short_desc_hint" />
+    <EditText
+        android:id="@+id/add_course_long_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_course_long_desc_hint" />
+    <EditText
+        android:id="@+id/add_course_prereqs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_course_prereqs_hint" />
+    <Button
+        android:id="@+id/btn_add_course"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="@string/btn_add_course" />
+
+</LinearLayout>
