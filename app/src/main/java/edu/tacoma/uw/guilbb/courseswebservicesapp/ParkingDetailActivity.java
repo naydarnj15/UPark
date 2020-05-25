@@ -29,6 +29,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 import edu.tacoma.uw.guilbb.courseswebservicesapp.model.Course;
 import edu.tacoma.uw.guilbb.courseswebservicesapp.model.Member;
@@ -50,6 +51,8 @@ public class ParkingDetailActivity extends AppCompatActivity
     private static final String TAG = "DisplayMessageActivity";
     ParkingDetailFragment myFragment;
     private FragmentRefreshListener fragmentRefreshListener;
+    private Course updateCourse;
+    private List<Course> mCourseList;
 
 
     private class UpdateCourseAsyncTask extends AsyncTask<String, Void, String> {
@@ -100,6 +103,9 @@ public class ParkingDetailActivity extends AppCompatActivity
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 if (jsonObject.getBoolean("success")) {
+                    //mCourseList = Course.parseCourseJson(jsonObject.getString("names"));
+                    //((ParkingDetailFragment) getSupportFragmentManager().findFragmentById(R.id.item_detail_container)).updateParkingAreas(mCourseList);
+                    Log.e(UPDATE_COURSE, "json in updateasynch: "+ mCourseJSON.toString());
                     Toast.makeText(getApplicationContext(), "Course Added successfully"
                             , Toast.LENGTH_SHORT).show();
                 }
@@ -124,6 +130,7 @@ public class ParkingDetailActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_item_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
@@ -181,7 +188,29 @@ public class ParkingDetailActivity extends AppCompatActivity
         //public static final String ARG_ITEM_ID = "item_id";
         //mItem = (Course) getArguments().getSerializable(ARG_ITEM_ID);
         final Course thisCourse = (Course) getIntent().getSerializableExtra(ParkingDetailFragment.ARG_ITEM_ID);
+        updateCourse = thisCourse;
         Activity v = this;
+        mCourseJSON = new JSONObject();
+        try {
+            mCourseJSON.put(Course.ID, thisCourse.getmCourseId());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            mCourseJSON.put(Course.SHORT_DESC, thisCourse.getmCourseShortDesc());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            mCourseJSON.put(Course.LONG_DESC, thisCourse.getmCourseLongDesc());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            mCourseJSON.put(Course.PRE_REQS, thisCourse.getmCoursePrereqs());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
         Button yesButton = this.findViewById(R.id.add_course_prereqs_yes);
@@ -191,8 +220,8 @@ public class ParkingDetailActivity extends AppCompatActivity
                 String parkingAvailability = "Yes";
 
                 Log.i(TAG, "yes was entered");
-                updateCourse(thisCourse, parkingAvailability);
-                getFragmentRefreshListener().onRefresh();
+                updateCourse(parkingAvailability);
+                //getFragmentRefreshListener().onRefresh();
                 //refresh does not have working content yet
             }
         };
@@ -203,7 +232,7 @@ public class ParkingDetailActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 String parkingAvailability = "No";
-                updateCourse(thisCourse, parkingAvailability);
+                updateCourse(parkingAvailability);
                 Log.i(TAG, "no was entered");
             }
         };
@@ -217,7 +246,7 @@ public class ParkingDetailActivity extends AppCompatActivity
 
                 Log.i(TAG, "yes was entered");
                 updateHandicapParking(thisCourse, parkingAvailability);
-                getFragmentRefreshListener().onRefresh();
+                //getFragmentRefreshListener().onRefresh();
                 //refresh does not have working content yet
             }
         };
@@ -304,6 +333,7 @@ public class ParkingDetailActivity extends AppCompatActivity
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 if (jsonObject.getBoolean("success")) {
+                    mCourseList = Course.parseCourseJson(jsonObject.getString("names"));
                     Toast.makeText(getApplicationContext(), "Course Added successfully"
                             , Toast.LENGTH_SHORT).show();
                 }
@@ -414,15 +444,15 @@ public class ParkingDetailActivity extends AppCompatActivity
     }
 
     //TODO: Refactor to updateParkingAvailability
-    public void updateCourse(Course course, String newAvailability){
+    public void updateCourse(String newAvailability){
         StringBuilder url = new StringBuilder(getString(R.string.update_course));
 
         //Construct a JSONObject to build a formatted message to send
-        mCourseJSON = new JSONObject();
+        //mCourseJSON = new JSONObject();
         try{
-            mCourseJSON.put(Course.ID, course.getmCourseId());
-            mCourseJSON.put(Course.SHORT_DESC, course.getmCourseShortDesc());
-            mCourseJSON.put(Course.LONG_DESC, course.getmCourseLongDesc());
+            //mCourseJSON.put(Course.ID, course.getmCourseId());
+            //mCourseJSON.put(Course.SHORT_DESC, course.getmCourseShortDesc());
+            //mCourseJSON.put(Course.LONG_DESC, course.getmCourseLongDesc());
             mCourseJSON.put(Course.PRE_REQS, newAvailability);
             new UpdateCourseAsyncTask().execute(url.toString());
 
@@ -430,6 +460,11 @@ public class ParkingDetailActivity extends AppCompatActivity
             Toast.makeText(this, "Error with JSON creation on adding a course: "
                             + e.getMessage()
                     ,Toast.LENGTH_SHORT).show();
+        }
+        try {
+            ((ParkingDetailFragment) getSupportFragmentManager().findFragmentById(R.id.item_detail_container)).updateAvailableParking(mCourseJSON);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
@@ -456,12 +491,12 @@ public class ParkingDetailActivity extends AppCompatActivity
         StringBuilder url = new StringBuilder(getString(R.string.update_course));
 
         //Construct a JSONObject to build a formatted message to send
-        mCourseJSON = new JSONObject();
+        //mCourseJSON = new JSONObject();
         try{
-            mCourseJSON.put(Course.ID, course.getmCourseId());
+            //mCourseJSON.put(Course.ID, course.getmCourseId());
             mCourseJSON.put(Course.SHORT_DESC, newHandicapAvailability);
-            mCourseJSON.put(Course.LONG_DESC, course.getmCourseLongDesc());
-            mCourseJSON.put(Course.PRE_REQS, course.getmCoursePrereqs());
+            //mCourseJSON.put(Course.LONG_DESC, course.getmCourseLongDesc());
+            //mCourseJSON.put(Course.PRE_REQS, course.getmCoursePrereqs());
             new UpdateCourseAsyncTask().execute(url.toString());
 
         }catch (JSONException e){
@@ -470,8 +505,19 @@ public class ParkingDetailActivity extends AppCompatActivity
                     ,Toast.LENGTH_SHORT).show();
         }
 
+        //myFragment.
+        //Log.e(UPDATE_COURSE, "courselist passing to fragment: " + mCourseList.toString());
+        try {
+            ((ParkingDetailFragment) getSupportFragmentManager().findFragmentById(R.id.item_detail_container)).updateHandicapParking(mCourseJSON);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
+    public List<Course> getUpdatedParkingAreaList(){
+        return mCourseList;
+    }
 
     public FragmentRefreshListener getFragmentRefreshListener() {
         return fragmentRefreshListener;
@@ -484,6 +530,8 @@ public class ParkingDetailActivity extends AppCompatActivity
     public interface FragmentRefreshListener{
         void onRefresh();
     }
+
+
 
 
 

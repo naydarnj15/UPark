@@ -8,12 +8,18 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
 
 import edu.tacoma.uw.guilbb.courseswebservicesapp.model.Course;
 
@@ -47,6 +53,9 @@ public class ParkingDetailFragment extends Fragment {
     TextView shortdesc;
     TextView id;
     TextView prereqs;
+    Fragment thisFragment;
+    View rootView;
+    List<Course> parkingAreaList;
 
 
     /**
@@ -66,6 +75,7 @@ public class ParkingDetailFragment extends Fragment {
             // to load content from a content provider.
             mItem = (Course) getArguments().getSerializable(ARG_ITEM_ID);
 
+            thisFragment = this;
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout)
                     activity.findViewById(R.id.toolbar_layout);
@@ -80,7 +90,7 @@ public class ParkingDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.item_detail, container, false);
+        rootView = inflater.inflate(R.layout.item_detail, container, false);
 
         // Show the course content as text in a TextView.
         if (mItem != null) {
@@ -110,6 +120,8 @@ public class ParkingDetailFragment extends Fragment {
                 mHandler = new Handler();
                 mHandler.post(mUpdate);
 
+
+
             }
         });
         rootView = theRootView;
@@ -118,14 +130,57 @@ public class ParkingDetailFragment extends Fragment {
         return rootView;
     }
 
+    public void updateHandicapParking(JSONObject updatedParkingArea)throws JSONException{
+        shortdesc =((TextView) rootView.findViewById(R.id.item_detail_short_desc));
+        shortdesc.setText("Handicap parking?: " + updatedParkingArea.getString(Course.SHORT_DESC));
+    }
+
+    public void updateAvailableParking(JSONObject updatedParkingArea) throws JSONException {
+        prereqs = ((TextView) rootView.findViewById(R.id.item_detail_prereqs));
+        prereqs.setText("Empty spots?: " + updatedParkingArea.getString(Course.PRE_REQS));
+    }
+
+    public void updateParkingAreas(JSONObject updatedParkingArea) throws JSONException {
+
+        Log.e("ACTIVITY", "Json passed to Act: " + updatedParkingArea);
+        //------------update
+       
+
+        String newHandicapAvail;
+        String newAvail;
+        String newHourlyCost;
+
+        newHourlyCost = updatedParkingArea.getString(Course.LONG_DESC);
+        newAvail = updatedParkingArea.getString(Course.PRE_REQS);
+        newHandicapAvail = updatedParkingArea.getString(Course.SHORT_DESC);
+
+
+        longdesc = ((TextView) rootView.findViewById(R.id.item_detail_long_desc));
+        longdesc.setText(
+                newHourlyCost + "$/hr");
+
+        shortdesc =((TextView) rootView.findViewById(R.id.item_detail_short_desc));
+        shortdesc.setText("Handicap parking?: " + newHandicapAvail);
+
+        id = ((TextView) rootView.findViewById(R.id.item_detail_id));
+        id.setText( mItem.getmCourseId());
+
+        prereqs = ((TextView) rootView.findViewById(R.id.item_detail_prereqs));
+        prereqs.setText("Empty spots?: " + newAvail);
+
+        //---------------
+    }
+
+
+
 
     private Runnable mUpdate = new Runnable() {
         public void run() {
 
             if (mItem != null) {
-                longdesc.setText( mItem.getmCourseLongDesc()+ "$/hr");
+                /*longdesc.setText( mItem.getmCourseLongDesc()+ "$/hr");
 
-                shortdesc.setText("Handicap parking?: " +
+                shortdesc.setText("Handicap parking???: " +
                         mItem.getmCourseShortDesc());
 
                 id.setText(
@@ -134,8 +189,12 @@ public class ParkingDetailFragment extends Fragment {
                 prereqs.setText(
                         "Empty spots?: " +mItem.getmCoursePrereqs());
 
+
+
+                getFragmentManager().beginTransaction().detach(thisFragment).attach(thisFragment).commit();*/
+
             }
-            Toast.makeText(getActivity().getApplicationContext(), "REFRESH!!" + mItem.getmCoursePrereqs(), Toast.LENGTH_SHORT).show();
+            /*Toast.makeText(getActivity().getApplicationContext(), "REFRESH!!" + mItem.getmCoursePrereqs(), Toast.LENGTH_SHORT).show();*/
 
 
 
