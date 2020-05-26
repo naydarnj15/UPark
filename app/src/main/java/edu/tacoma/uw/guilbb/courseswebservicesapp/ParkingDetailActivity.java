@@ -103,8 +103,6 @@ public class ParkingDetailActivity extends AppCompatActivity
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 if (jsonObject.getBoolean("success")) {
-                    //mCourseList = Course.parseCourseJson(jsonObject.getString("names"));
-                    //((ParkingDetailFragment) getSupportFragmentManager().findFragmentById(R.id.item_detail_container)).updateParkingAreas(mCourseList);
                     Log.e(UPDATE_COURSE, "json in updateasynch: "+ mCourseJSON.toString());
                     Toast.makeText(getApplicationContext(), "Course Added successfully"
                             , Toast.LENGTH_SHORT).show();
@@ -447,12 +445,7 @@ public class ParkingDetailActivity extends AppCompatActivity
     public void updateCourse(String newAvailability){
         StringBuilder url = new StringBuilder(getString(R.string.update_course));
 
-        //Construct a JSONObject to build a formatted message to send
-        //mCourseJSON = new JSONObject();
         try{
-            //mCourseJSON.put(Course.ID, course.getmCourseId());
-            //mCourseJSON.put(Course.SHORT_DESC, course.getmCourseShortDesc());
-            //mCourseJSON.put(Course.LONG_DESC, course.getmCourseLongDesc());
             mCourseJSON.put(Course.PRE_REQS, newAvailability);
             new UpdateCourseAsyncTask().execute(url.toString());
 
@@ -493,10 +486,7 @@ public class ParkingDetailActivity extends AppCompatActivity
         //Construct a JSONObject to build a formatted message to send
         //mCourseJSON = new JSONObject();
         try{
-            //mCourseJSON.put(Course.ID, course.getmCourseId());
             mCourseJSON.put(Course.SHORT_DESC, newHandicapAvailability);
-            //mCourseJSON.put(Course.LONG_DESC, course.getmCourseLongDesc());
-            //mCourseJSON.put(Course.PRE_REQS, course.getmCoursePrereqs());
             new UpdateCourseAsyncTask().execute(url.toString());
 
         }catch (JSONException e){
@@ -505,8 +495,7 @@ public class ParkingDetailActivity extends AppCompatActivity
                     ,Toast.LENGTH_SHORT).show();
         }
 
-        //myFragment.
-        //Log.e(UPDATE_COURSE, "courselist passing to fragment: " + mCourseList.toString());
+
         try {
             ((ParkingDetailFragment) getSupportFragmentManager().findFragmentById(R.id.item_detail_container)).updateHandicapParking(mCourseJSON);
         } catch (JSONException e) {
@@ -515,9 +504,6 @@ public class ParkingDetailActivity extends AppCompatActivity
 
     }
 
-    public List<Course> getUpdatedParkingAreaList(){
-        return mCourseList;
-    }
 
     public FragmentRefreshListener getFragmentRefreshListener() {
         return fragmentRefreshListener;

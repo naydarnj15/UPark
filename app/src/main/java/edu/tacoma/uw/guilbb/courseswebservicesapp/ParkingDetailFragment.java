@@ -130,46 +130,31 @@ public class ParkingDetailFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * This method updates the text that displays weather there is handicap parking available
+     * @param updatedParkingArea    A json object with the updated handicap availability info, this
+     *                              should be coming from ParkingDetailActivity
+     * @throws JSONException        If there is something wrong with the json passed in as a parameter
+     *                              then it will throw an exception
+     */
     public void updateHandicapParking(JSONObject updatedParkingArea)throws JSONException{
         shortdesc =((TextView) rootView.findViewById(R.id.item_detail_short_desc));
         shortdesc.setText("Handicap parking?: " + updatedParkingArea.getString(Course.SHORT_DESC));
     }
 
+    /**
+     * This method updates the text that displays weather there is any parking available
+     * @param updatedParkingArea    A json object with the updated parking availability info, this
+     *                              should be coming from ParkingDetailActivity
+     * @throws JSONException        If there is something wrong with the json passed in as a parameter
+     *                              then it will throw an exception
+     */
     public void updateAvailableParking(JSONObject updatedParkingArea) throws JSONException {
         prereqs = ((TextView) rootView.findViewById(R.id.item_detail_prereqs));
         prereqs.setText("Empty spots?: " + updatedParkingArea.getString(Course.PRE_REQS));
     }
 
-    public void updateParkingAreas(JSONObject updatedParkingArea) throws JSONException {
 
-        Log.e("ACTIVITY", "Json passed to Act: " + updatedParkingArea);
-        //------------update
-       
-
-        String newHandicapAvail;
-        String newAvail;
-        String newHourlyCost;
-
-        newHourlyCost = updatedParkingArea.getString(Course.LONG_DESC);
-        newAvail = updatedParkingArea.getString(Course.PRE_REQS);
-        newHandicapAvail = updatedParkingArea.getString(Course.SHORT_DESC);
-
-
-        longdesc = ((TextView) rootView.findViewById(R.id.item_detail_long_desc));
-        longdesc.setText(
-                newHourlyCost + "$/hr");
-
-        shortdesc =((TextView) rootView.findViewById(R.id.item_detail_short_desc));
-        shortdesc.setText("Handicap parking?: " + newHandicapAvail);
-
-        id = ((TextView) rootView.findViewById(R.id.item_detail_id));
-        id.setText( mItem.getmCourseId());
-
-        prereqs = ((TextView) rootView.findViewById(R.id.item_detail_prereqs));
-        prereqs.setText("Empty spots?: " + newAvail);
-
-        //---------------
-    }
 
 
 
