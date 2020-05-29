@@ -49,13 +49,15 @@
         android:layout_marginBottom="20dp"
         android:background="#FFFFFF"
         android:hint="Email" />
+
     <EditText
         android:id="@+id/add_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:background="#FFFFFF"
-        android:hint="Password" />
+        android:hint="Password"
+        android:inputType="textPassword" />
     <Button
         android:id="@+id/btn_register"
         android:layout_width="wrap_content"

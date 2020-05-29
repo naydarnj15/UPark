@@ -97,6 +97,8 @@ public class ParkingListActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setIcon(R.drawable.u_park_logo);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
         toolbar.setTitle(getTitle());
 
 
