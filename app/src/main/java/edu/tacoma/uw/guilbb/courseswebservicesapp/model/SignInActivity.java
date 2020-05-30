@@ -29,17 +29,56 @@ import edu.tacoma.uw.guilbb.courseswebservicesapp.ParkingDetailActivity;
 import edu.tacoma.uw.guilbb.courseswebservicesapp.ParkingListActivity;
 import edu.tacoma.uw.guilbb.courseswebservicesapp.R;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+
+
 public class SignInActivity extends AppCompatActivity implements LoginFragment.LoginFragmentListener, LoginFragment.RegisterFragmentListener {
 
     private SharedPreferences mSharedPreferences;
     private JSONObject mMemberJSON;
     private static final String TAG = "DisplayMessageActivity";
     public static final String LOGIN = "LOGIN";
+    public CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        //FacebookSdk.sdkInitialize(getApplicationContext());
+        //AppEventsLogger.activateApp(this);
+        callbackManager = CallbackManager.Factory.create();
+        LoginButton facebookBtn = findViewById(R.id.login_button);
+        facebookBtn.registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        // App code
+                        Intent intent = new Intent(getApplicationContext(), ParkingListActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // App code
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        // App code
+                    }
+
+                });
+
+
         //Toast.makeText(this, "You have signed in", Toast.LENGTH_SHORT).show();
         mSharedPreferences = getSharedPreferences(getString(R.string.LOGIN_PREFS)
                 , Context.MODE_PRIVATE);
@@ -55,46 +94,17 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
             finish();
         }
 
-        //final EditText emailEditText = this.findViewById(R.id.email_address_id);
-        //final EditText passwordEditText = this.findViewById(R.id.password_id);
+//
+//        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+//        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
-        /*Button signInButton = this.findViewById(R.id.btn_sign_in);
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Log.e(TAG, "adding member...");
-                String password = passwordEditText.getText().toString();
-                String email = emailEditText.getText().toString();
-
-                Log.i(TAG, "email is:");
-                Log.i(TAG, email);
-                loginMember(email, password);
-                Log.i(TAG, "memberAdded");
-                //refresh does not have working content yet
-            }
-        });*/
-
-        /*View.OnClickListener signInButtonOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Log.e(TAG, "adding member...");
-                String password = passwordEditText.getText().toString();
-                String email = emailEditText.getText().toString();
-
-                Log.i(TAG, "email is:");
-                Log.i(TAG, email);
-                loginMember(email, password);
-                Log.i(TAG, "memberAdded");
-                //refresh does not have working content yet
-            }
-        };
-        signInButton.setOnClickListener (signInButtonOnClickListener);*/
+    }
 
 
-
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -115,94 +125,6 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
         startActivity(i);
         finish();
     }
-
-    /*private class LoginMemberAsyncTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... urls) {
-            String response = "";
-            HttpURLConnection urlConnection = null;
-            for (String url : urls) {
-                try {
-                    URL urlObject = new URL(url);
-                    urlConnection = (HttpURLConnection) urlObject.openConnection();
-                    urlConnection.setRequestMethod("POST");
-                    urlConnection.setRequestProperty("Content-Type", "application/json");
-                    urlConnection.setDoOutput(true);
-                    OutputStreamWriter wr =
-                            new OutputStreamWriter(urlConnection.getOutputStream());
-
-                    // For Debugging
-                    Log.i(LOGIN, mMemberJSON.toString());
-                    wr.write(mMemberJSON.toString());
-                    wr.flush();
-                    wr.close();
-
-                    InputStream content = urlConnection.getInputStream();
-
-                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                    String s = "";
-                    while ((s = buffer.readLine()) != null) {
-                        response += s;
-                    }
-
-                } catch (Exception e) {
-                    response = "Unable to add the new course, Reason: "
-                            + e.getMessage();
-                } finally {
-                    if (urlConnection != null)
-                        urlConnection.disconnect();
-                }
-            }
-            return response;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            if (s.startsWith("Unable to add the new course")) {
-                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
-                return;
-            }
-            try {
-                JSONObject jsonObject = new JSONObject(s);
-                if (jsonObject.getBoolean("success")) {
-                    Toast.makeText(getApplicationContext(), "Course Added successfully"
-                            , Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Course couldn't be added: "
-                                    + jsonObject.getString("error")
-                            , Toast.LENGTH_LONG).show();
-                    Log.e(LOGIN, jsonObject.getString("error"));
-                }
-            } catch (JSONException e) {
-                Toast.makeText(getApplicationContext(), "JSON Parsing error on Adding course"
-                                + e.getMessage()
-                        , Toast.LENGTH_LONG).show();
-                Log.e(LOGIN, e.getMessage());
-            }
-        }
-    }
-
-
-    public void loginMember(String email, String password){
-        StringBuilder url = new StringBuilder(getString(R.string.login));
-        //Log.i(TAG, "entered registerMember method");
-        //Construct a JSONObject to build a formatted message to send
-        mMemberJSON = new JSONObject();
-
-        try{
-
-            Log.i(TAG, "entered registerMember method");
-            mMemberJSON.put(Member.EMAIL, email);
-            mMemberJSON.put(Member.PASSWORD, password);
-            new LoginMemberAsyncTask().execute(url.toString());
-
-        }catch (JSONException e){
-            Toast.makeText(this, "Error with JSON creation on adding a course: "
-                            + e.getMessage()
-                    ,Toast.LENGTH_SHORT).show();
-        }
-    }*/
 
 }
 

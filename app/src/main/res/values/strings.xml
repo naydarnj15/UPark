@@ -18,5 +18,8 @@
     <string name="action_logout">Sign Out</string>
     <string name="btn_create_acc">Create Account</string>
     <string name="btn_register">Register</string>
+    <string name="facebook_app_id">975873809517235</string>
+    <string name="fb_login_protocol_scheme">fb975873809517235</string>
+
 
 </resources>

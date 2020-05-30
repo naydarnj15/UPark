@@ -16,6 +16,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,6 +32,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
 import edu.tacoma.uw.guilbb.courseswebservicesapp.model.Member;
@@ -53,6 +61,7 @@ public class LoginFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    public CallbackManager callbackManager;
 
     private LoginFragmentListener mLoginFragmentListener;
 
@@ -114,6 +123,34 @@ public class LoginFragment extends Fragment {
 
         Button loginButton = v.findViewById(R.id.btn_sign_in);
         Button registerButton = v.findViewById(R.id.btn_create_acc);
+        LoginButton facebookButton = v.findViewById(R.id.login_button);
+
+        facebookButton.setReadPermissions("user_friends");
+        facebookButton.setFragment(this);
+        //callbackManager = CallbackManager.Factory.create();
+        //LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+
+        facebookButton.registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        // App code
+
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // App code
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        // App code
+                    }
+
+                });
+
+
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
