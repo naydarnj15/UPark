@@ -34,11 +34,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;*/
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -60,6 +63,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -202,6 +206,16 @@ public class ParkingListActivity extends AppCompatActivity {
             startActivity(i);
             finish();
         }
+        if (item.getItemId() == R.id.share) {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            String shareBody = "Your body here";
+            String shareSub = "Your Subject here";
+            intent.putExtra(Intent.EXTRA_SUBJECT, shareBody);
+            intent.putExtra(Intent.EXTRA_TEXT, shareSub);
+            startActivity(Intent.createChooser(intent, "ShareUsing"));
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

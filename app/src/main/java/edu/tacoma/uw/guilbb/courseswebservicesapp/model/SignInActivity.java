@@ -55,8 +55,8 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
         //FacebookSdk.sdkInitialize(getApplicationContext());
         //AppEventsLogger.activateApp(this);
         callbackManager = CallbackManager.Factory.create();
-        LoginButton facebookBtn = findViewById(R.id.login_button);
-        facebookBtn.registerCallback(callbackManager,
+        //LoginButton facebookBtn = findViewById(R.id.login_button);
+        LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
@@ -95,8 +95,8 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
         }
 
 //
-//        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-//        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
     }
 
