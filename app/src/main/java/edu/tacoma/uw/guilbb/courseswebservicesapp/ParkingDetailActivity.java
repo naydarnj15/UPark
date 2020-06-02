@@ -97,24 +97,24 @@ public class ParkingDetailActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(String s) {
             if (s.startsWith("Unable to update the course")) {
-                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Unable to Update Parking Lot", Toast.LENGTH_SHORT).show();
                 return;
             }
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 if (jsonObject.getBoolean("success")) {
                     Log.e(UPDATE_COURSE, "json in updateasynch: "+ mCourseJSON.toString());
-                    Toast.makeText(getApplicationContext(), "Course Added successfully"
+                    Toast.makeText(getApplicationContext(), "Parking Lot Updated Succesfully"
                             , Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(getApplicationContext(), "Course couldn't be added: "
+                    Toast.makeText(getApplicationContext(), "Parking Lot Failed to Update: "
                                     + jsonObject.getString("error")
                             , Toast.LENGTH_LONG).show();
                     Log.e(UPDATE_COURSE, jsonObject.getString("error"));
                 }
             } catch (JSONException e) {
-                Toast.makeText(getApplicationContext(), "JSON Parsing error on Adding course"
+                Toast.makeText(getApplicationContext(), "JSON Parsing Error While Updating Parking Lot: "
                                 + e.getMessage()
                         , Toast.LENGTH_LONG).show();
                 Log.e(UPDATE_COURSE, e.getMessage());
@@ -325,24 +325,24 @@ public class ParkingDetailActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(String s) {
             if (s.startsWith("Unable to add the new course")) {
-                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Unable to Update Parking Lot", Toast.LENGTH_SHORT).show();
                 return;
             }
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 if (jsonObject.getBoolean("success")) {
                     mCourseList = Course.parseCourseJson(jsonObject.getString("names"));
-                    Toast.makeText(getApplicationContext(), "Course Added successfully"
+                    Toast.makeText(getApplicationContext(), "Parking Lot Updated Succesfully"
                             , Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(getApplicationContext(), "Course couldn't be added: "
+                    Toast.makeText(getApplicationContext(), "Parking Lot Failed to Update: "
                                     + jsonObject.getString("error")
                             , Toast.LENGTH_LONG).show();
                     Log.e(ADD_COURSE, jsonObject.getString("error"));
                 }
             } catch (JSONException e) {
-                Toast.makeText(getApplicationContext(), "JSON Parsing error on Adding course"
+                Toast.makeText(getApplicationContext(), "JSON Parsing Error While Updating Parking Lot"
                                 + e.getMessage()
                         , Toast.LENGTH_LONG).show();
                 Log.e(ADD_COURSE, e.getMessage());
@@ -435,7 +435,7 @@ public class ParkingDetailActivity extends AppCompatActivity
             new AddCourseAsyncTask().execute(url.toString());
 
         }catch (JSONException e){
-            Toast.makeText(this, "Error with JSON creation on adding a course: "
+            Toast.makeText(this, "JSON Parsing Error While Updating Parking Lot: "
             + e.getMessage()
             ,Toast.LENGTH_SHORT).show();
         }
@@ -449,7 +449,7 @@ public class ParkingDetailActivity extends AppCompatActivity
             new UpdateCourseAsyncTask().execute(url.toString());
 
         }catch (JSONException e){
-            Toast.makeText(this, "Error with JSON creation on adding a course: "
+            Toast.makeText(this, "JSON Parsing Error While Updating Parking Lot: "
                             + e.getMessage()
                     ,Toast.LENGTH_SHORT).show();
         }
@@ -489,7 +489,7 @@ public class ParkingDetailActivity extends AppCompatActivity
             new UpdateCourseAsyncTask().execute(url.toString());
 
         }catch (JSONException e){
-            Toast.makeText(this, "Error with JSON creation on adding a course: "
+            Toast.makeText(this, "JSON Parsing Error While Updating Parking Lot: "
                             + e.getMessage()
                     ,Toast.LENGTH_SHORT).show();
         }
