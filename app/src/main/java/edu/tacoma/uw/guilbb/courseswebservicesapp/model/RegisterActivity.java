@@ -6,7 +6,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,6 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 //        ParkingAddFragment courseAddFragment = new ParkingAddFragment();
 //        getSupportFragmentManager().beginTransaction()
@@ -58,10 +62,10 @@ public class RegisterActivity extends AppCompatActivity {
         //final Member thisMember = (Member) getIntent().getSerializableExtra(ParkingDetailFragment.ARG_ITEM_ID);
 
 
-        final EditText firstNameEditText = this.findViewById(R.id.add_first_name);
-        final EditText lastNameEditText = this.findViewById(R.id.add_last_name);
+        //final EditText firstNameEditText = this.findViewById(R.id.add_first_name);
+        //final EditText lastNameEditText = this.findViewById(R.id.add_last_name);
         final EditText emailEditText = this.findViewById(R.id.add_email);
-        final EditText usernameEditText = this.findViewById(R.id.add_username);
+        //final EditText usernameEditText = this.findViewById(R.id.add_username);
         final EditText passwordEditText = this.findViewById(R.id.add_password);
 
 
@@ -69,27 +73,34 @@ public class RegisterActivity extends AppCompatActivity {
         View.OnClickListener registerButtonOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Log.e(TAG, "adding member...");
-                String firstName = firstNameEditText.getText().toString();
-                String lastName = lastNameEditText.getText().toString();
-                String username = usernameEditText.getText().toString();
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
+                if (TextUtils.isEmpty(email) || !email.contains("@")) {
+                    Toast.makeText(v.getContext(), "Enter valid email address", Toast.LENGTH_SHORT).show();
+                    emailEditText.requestFocus();
+                }else if (TextUtils.isEmpty(password) || password.length() < 6) {
+                    Toast.makeText(v.getContext(), "Enter a valid password (at least 6 characters)", Toast.LENGTH_SHORT).show();
+                    passwordEditText.requestFocus();
+                } else {
+                    registerMember(email, password);
 
-                Log.i(TAG, "first name is:");
-                Log.i(TAG, firstName);
-                registerMember(firstName,
-                        lastName,
-                        email,
-                        username,
-                        password);
-                Log.i(TAG, "memberAdded");
-                //refresh does not have working content yet
+                }
             }
         };
         registerButton.setOnClickListener (registerButtonOnClickListener);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent myIntent = new Intent(getApplicationContext(), SignInActivity.class);
+        startActivityForResult(myIntent, 0);
+        return true;
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
     }
 
     private class RegisterMemberAsyncTask extends AsyncTask<String, Void, String> {
@@ -162,32 +173,24 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-    public void registerMember(String firstName, String lastName, String email, String username, String password){
+    public void registerMember(String email, String password){
         StringBuilder url = new StringBuilder(getString(R.string.register_course));
         //Log.i(TAG, "entered registerMember method");
         //Construct a JSONObject to build a formatted message to send
         mMemberJSON = new JSONObject();
 
         try{
-            mMemberJSON.put(Member.FIRST_NAME, firstName);
-            mMemberJSON.put(Member.LAST_NAME, lastName);
+
             Log.i(TAG, "entered registerMember method");
             mMemberJSON.put(Member.EMAIL, email);
             mMemberJSON.put(Member.PASSWORD, password);
-            mMemberJSON.put(Member.USERNAME, username);
             new RegisterActivity.RegisterMemberAsyncTask().execute(url.toString());
 
 
         }catch (JSONException e){
-            Toast.makeText(this, "Error with JSON creation on adding a course: "
+            Toast.makeText(this, "Error with JSON creation on adding a member: "
                             + e.getMessage()
                     ,Toast.LENGTH_SHORT).show();
         }
     }
-
-
-
-
-
-
 }
