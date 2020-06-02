@@ -1,6 +1,10 @@
 package edu.tacoma.uw.guilbb.courseswebservicesapp;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,6 +19,8 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.ActionBar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.view.MenuItem;
 import android.widget.Button;
@@ -33,6 +39,8 @@ import java.util.List;
 
 import edu.tacoma.uw.guilbb.courseswebservicesapp.model.Course;
 import edu.tacoma.uw.guilbb.courseswebservicesapp.model.Member;
+
+import static edu.tacoma.uw.guilbb.courseswebservicesapp.App.CHANNEL_1_ID;
 
 /**
  * An activity representing a single Item detail screen. This
@@ -53,6 +61,7 @@ public class ParkingDetailActivity extends AppCompatActivity
     private FragmentRefreshListener fragmentRefreshListener;
     private Course updateCourse;
     private List<Course> mCourseList;
+    private NotificationManagerCompat notificationManager;
 
 
     private class UpdateCourseAsyncTask extends AsyncTask<String, Void, String> {
@@ -122,7 +131,18 @@ public class ParkingDetailActivity extends AppCompatActivity
         }
     }
 
+    public void sendOnChannel1(View v, String courseID) {
 
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
+                .setSmallIcon(R.drawable.u_park_logo)
+                .setContentTitle(courseID)
+                .setContentText("Parking Available")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .build();
+
+        notificationManager.notify(1, notification);
+    }
 
 
     @Override
@@ -137,8 +157,13 @@ public class ParkingDetailActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                String shareBody = "Your body here";
+                String shareSub = "Your Subject here";
+                intent.putExtra(Intent.EXTRA_SUBJECT, shareBody);
+                intent.putExtra(Intent.EXTRA_TEXT, shareSub);
+                startActivity(Intent.createChooser(intent, "ShareUsing"));
             }
         });
 
@@ -219,8 +244,7 @@ public class ParkingDetailActivity extends AppCompatActivity
 
                 Log.i(TAG, "yes was entered");
                 updateCourse(parkingAvailability);
-                //getFragmentRefreshListener().onRefresh();
-                //refresh does not have working content yet
+                sendOnChannel1(v, thisCourse.getmCourseId());
             }
         };
         yesButton.setOnClickListener (yesButtonOnClickListener);
@@ -261,6 +285,7 @@ public class ParkingDetailActivity extends AppCompatActivity
         };
         noButtonHandicap.setOnClickListener (noButtonHandicapOnClickListener);
 
+        notificationManager = NotificationManagerCompat.from(this);
     }
 
 

@@ -240,7 +240,9 @@ public class ParkingListActivity extends AppCompatActivity {
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     //mCourseList
-                    adapter.getFilter().filter(newText);
+                    if (newText != null) {
+                        adapter.getFilter().filter(newText);
+                    }
                     return true;
                 }
             });
