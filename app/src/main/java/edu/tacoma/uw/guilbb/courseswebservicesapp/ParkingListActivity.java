@@ -228,6 +228,7 @@ public class ParkingListActivity extends AppCompatActivity {
             finish();
         }
 
+
         if (item.getItemId() == R.id.action_search) {
             SearchView searchView = (SearchView) item.getActionView();
             searchView.setQueryHint("Type here to Search");
@@ -256,6 +257,7 @@ public class ParkingListActivity extends AppCompatActivity {
 //            intent.putExtra(Intent.EXTRA_TEXT, shareSub);
 //            startActivity(Intent.createChooser(intent, "ShareUsing"));
 //        }
+
 
         return super.onOptionsItemSelected(item);
     }
