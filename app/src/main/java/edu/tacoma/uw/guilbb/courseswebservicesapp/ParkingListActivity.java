@@ -49,6 +49,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.ListView;
+import androidx.appcompat.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +73,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import edu.tacoma.uw.guilbb.courseswebservicesapp.data.ParkingDB;
@@ -89,10 +96,13 @@ public class ParkingListActivity extends AppCompatActivity {
      * device.
      */
     private boolean mTwoPane;
+    private ListView listView;
     private List<Course> mCourseList;
+    //private List<Course> parkingList;
     private RecyclerView mRecyclerView;
+    private SimpleItemRecyclerViewAdapter adapter;
     private ParkingDB mCourseDB;
-
+    //ArrayAdapter<Course> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +115,12 @@ public class ParkingListActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         toolbar.setTitle(getTitle());
 
-
+        //listView = findViewById(R.id.myListView);
+        //mCourseList = new ArrayList<>();
+        //parkingList = new ArrayList<>();
+//        adapter = new ArrayAdapter<>(this, R.layout.activity_item_list, parkingList);
+//
+//        listView.setAdapter(adapter);
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -165,6 +180,7 @@ public class ParkingListActivity extends AppCompatActivity {
                 mCourseList = mCourseDB.getCourses();
                 setupRecyclerView(mRecyclerView);
 
+
             }
 
         }
@@ -184,7 +200,12 @@ public class ParkingListActivity extends AppCompatActivity {
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         if(mCourseList != null){
-            mRecyclerView.setAdapter((new SimpleItemRecyclerViewAdapter(this, mCourseList, mTwoPane)));
+//            adapter = new ArrayAdapter<>(this, R.layout.activity_item_list, mCourseList);
+//
+//            listView.setAdapter(adapter);
+            adapter = new SimpleItemRecyclerViewAdapter(this, mCourseList, mTwoPane);
+            mRecyclerView.setAdapter(adapter);
+
         }
 
     }
@@ -206,15 +227,37 @@ public class ParkingListActivity extends AppCompatActivity {
             startActivity(i);
             finish();
         }
-        if (item.getItemId() == R.id.share) {
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("text/plain");
-            String shareBody = "Your body here";
-            String shareSub = "Your Subject here";
-            intent.putExtra(Intent.EXTRA_SUBJECT, shareBody);
-            intent.putExtra(Intent.EXTRA_TEXT, shareSub);
-            startActivity(Intent.createChooser(intent, "ShareUsing"));
+
+
+        if (item.getItemId() == R.id.action_search) {
+            SearchView searchView = (SearchView) item.getActionView();
+            searchView.setQueryHint("Type here to Search");
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    //mCourseList
+                    if (newText != null) {
+                        adapter.getFilter().filter(newText);
+                    }
+                    return true;
+                }
+            });
         }
+//        if (item.getItemId() == R.id.share) {
+//            Intent intent = new Intent(Intent.ACTION_SEND);
+//            intent.setType("text/plain");
+//            String shareBody = "Your body here";
+//            String shareSub = "Your Subject here";
+//            intent.putExtra(Intent.EXTRA_SUBJECT, shareBody);
+//            intent.putExtra(Intent.EXTRA_TEXT, shareSub);
+//            startActivity(Intent.createChooser(intent, "ShareUsing"));
+//        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -296,10 +339,11 @@ public class ParkingListActivity extends AppCompatActivity {
 
 
     public static class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> implements Filterable {
 
         private final ParkingListActivity mParentActivity;
         private final List<Course> mValues;
+        private final List<Course> mValuesAll;
         private final boolean mTwoPane;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
@@ -327,6 +371,7 @@ public class ParkingListActivity extends AppCompatActivity {
                                       List<Course> items,
                                       boolean twoPane) {
             mValues = items;
+            mValuesAll = new ArrayList<>(mValues);
             mParentActivity = parent;
             mTwoPane = twoPane;
         }
@@ -351,6 +396,45 @@ public class ParkingListActivity extends AppCompatActivity {
         public int getItemCount() {
             return mValues.size();
         }
+
+        @Override
+        public Filter getFilter() {
+
+            return myFilter;
+        }
+
+        Filter myFilter = new Filter() {
+
+            //Automatic on background thread
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+
+                List<Course> filteredList = new ArrayList<>();
+
+                if (charSequence == null || charSequence.length() == 0) {
+                    filteredList.addAll(mValuesAll);
+                } else {
+                    for (Course course: mValuesAll) {
+                        if (course.getmCourseId().toString().toLowerCase().contains(charSequence.toString().toLowerCase())) {
+                            filteredList.add(course);
+                        }
+                    }
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filteredList;
+                return filterResults;
+            }
+
+            //Automatic on UI thread
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                mValues.clear();
+                mValues.addAll((Collection<? extends Course>) filterResults.values);
+                notifyDataSetChanged();
+            }
+        };
+
 
         class ViewHolder extends RecyclerView.ViewHolder {
             final TextView mIdView;
