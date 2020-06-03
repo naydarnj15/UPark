@@ -1,6 +1,7 @@
 package edu.tacoma.uw.guilbb.courseswebservicesapp;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -96,11 +98,17 @@ public class ParkingDetailFragment extends Fragment {
         if (mItem != null) {
             longdesc = ((TextView) rootView.findViewById(R.id.item_detail_long_desc));
             longdesc.setText(
-                    mItem.getmCourseLongDesc() + "$/hr");
+                    mItem.getmCourseLongDesc() + "$ / hr");
 
             shortdesc =((TextView) rootView.findViewById(R.id.item_detail_short_desc));
-            shortdesc.setText(
-                    "Handicap parking?: " + mItem.getmCourseShortDesc());
+            if (mItem.getmCourseShortDesc().equals("Yes")){
+                // Accessible spots available
+                shortdesc.setText("Accessible Parking Available");
+            } else{
+                //No spots available
+                shortdesc.setText("Accessible Parking Full");
+            }
+
 
             id = ((TextView) rootView.findViewById(R.id.item_detail_id));
             id.setText(
@@ -139,7 +147,19 @@ public class ParkingDetailFragment extends Fragment {
      */
     public void updateHandicapParking(JSONObject updatedParkingArea)throws JSONException{
         shortdesc =((TextView) rootView.findViewById(R.id.item_detail_short_desc));
-        shortdesc.setText("Handicap parking?: " + updatedParkingArea.getString(Course.SHORT_DESC));
+        ImageView icon = ((ImageView) rootView.findViewById(R.id.accessible_icon));
+
+        if (updatedParkingArea.getString(Course.SHORT_DESC).equals("Yes")){
+            // Accessible spots available
+            shortdesc.setText("Accessible Parking Available");
+            icon.setColorFilter(Color.argb(255, 0, 255, 0));
+
+        } else{
+            //No spots available
+            shortdesc.setText("Accessible Parking Full");
+            icon.setColorFilter(Color.argb(255, 255, 0, 0));
+        }
+
     }
 
     /**
@@ -151,7 +171,17 @@ public class ParkingDetailFragment extends Fragment {
      */
     public void updateAvailableParking(JSONObject updatedParkingArea) throws JSONException {
         prereqs = ((TextView) rootView.findViewById(R.id.item_detail_prereqs));
-        prereqs.setText("Empty spots?: " + updatedParkingArea.getString(Course.PRE_REQS));
+        ImageView icon = ((ImageView) rootView.findViewById(R.id.parking_icon));
+        if (updatedParkingArea.getString(Course.PRE_REQS).equals("Yes")){
+            // Accessible spots available
+            prereqs.setText("Parking Available");
+            icon.setColorFilter(Color.argb(255, 0, 255, 0));
+
+        } else{
+            //No spots available
+            prereqs.setText("Parking Full");
+            icon.setColorFilter(Color.argb(255, 255, 0, 0));
+        }
     }
 
 
