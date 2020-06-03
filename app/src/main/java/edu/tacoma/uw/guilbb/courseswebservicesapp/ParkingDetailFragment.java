@@ -93,8 +93,8 @@ public class ParkingDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.item_detail, container, false);
-
-        // Show the course content as text in a TextView.
+        ImageView icon = ((ImageView) rootView.findViewById(R.id.accessible_icon));
+        // Show the parking availability as text in a TextView.
         if (mItem != null) {
             longdesc = ((TextView) rootView.findViewById(R.id.item_detail_long_desc));
             longdesc.setText(
@@ -104,19 +104,30 @@ public class ParkingDetailFragment extends Fragment {
             if (mItem.getmCourseShortDesc().equals("Yes")){
                 // Accessible spots available
                 shortdesc.setText("Accessible Parking Available");
+                icon.setColorFilter(Color.argb(255, 0, 255, 0));
             } else{
                 //No spots available
                 shortdesc.setText("Accessible Parking Full");
+                icon.setColorFilter(Color.argb(255, 255, 0, 0));
             }
 
 
             id = ((TextView) rootView.findViewById(R.id.item_detail_id));
+            icon = ((ImageView) rootView.findViewById(R.id.parking_icon));
             id.setText(
                     mItem.getmCourseId());
 
             prereqs = ((TextView) rootView.findViewById(R.id.item_detail_prereqs));
-            prereqs.setText("Empty spots?: " +
-                    mItem.getmCoursePrereqs());
+            if (mItem.getmCoursePrereqs().equals("Yes")){
+                // Accessible spots available
+                prereqs.setText("Parking Available");
+                icon.setColorFilter(Color.argb(255, 0, 255, 0));
+
+            } else{
+                //No spots available
+                prereqs.setText("Parking Full");
+                icon.setColorFilter(Color.argb(255, 255, 0, 0));
+            }
 
         }
         final View theRootView = rootView;
