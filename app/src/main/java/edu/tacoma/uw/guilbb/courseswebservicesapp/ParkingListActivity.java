@@ -62,6 +62,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONException;
@@ -89,7 +94,7 @@ import edu.tacoma.uw.guilbb.courseswebservicesapp.model.SignInActivity;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class ParkingListActivity extends AppCompatActivity {
+public class ParkingListActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -102,6 +107,10 @@ public class ParkingListActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private SimpleItemRecyclerViewAdapter adapter;
     private ParkingDB mCourseDB;
+
+
+    private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
+    private MapView mMapView;
     //ArrayAdapter<Course> adapter;
 
     @Override
@@ -114,6 +123,11 @@ public class ParkingListActivity extends AppCompatActivity {
         getSupportActionBar().setIcon(R.drawable.u_park_logo);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         toolbar.setTitle(getTitle());
+
+        /*ParkingMapFragment fragment = new ParkingMapFragment();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.item_detail_container, fragment)
+                .commit();*/
 
         //listView = findViewById(R.id.myListView);
         //mCourseList = new ArrayList<>();
@@ -150,6 +164,16 @@ public class ParkingListActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.item_list);
         assert mRecyclerView != null;
         setupRecyclerView((RecyclerView) mRecyclerView);
+
+        //MAP Stuff!!
+
+        ///View view = inflater.inflate(R.layout.activity_item_list, container, false);
+        mMapView = (MapView) findViewById(R.id.user_list_map);
+
+        initializeGoogleMap(savedInstanceState);
+
+
+
     }
 
     @Override
@@ -159,6 +183,7 @@ public class ParkingListActivity extends AppCompatActivity {
             new CoursesTask().execute(getString(R.string.get_courses));
         }*/
         super.onResume();
+        mMapView.onResume();
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -446,5 +471,46 @@ public class ParkingListActivity extends AppCompatActivity {
                 mContentView = (TextView) view.findViewById(R.id.content);
             }
         }
+    }
+
+//------------------------------------------------------------------------------------------------
+    private void initializeGoogleMap(Bundle savedInstanceState){
+        Bundle mapViewBundle = null;
+        if(savedInstanceState != null){
+            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
+        }
+
+        mMapView.onCreate(mapViewBundle);
+        mMapView.getMapAsync(this);
+    }
+
+
+    /*@Override
+    public void onResume(){
+        super.onResume();
+        mMapView.onResume();
+    }*/
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        mMapView.onStop();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(0,0)).title("Marker"));
+    }
+
+    @Override
+    public void onPause(){
+        mMapView.onPause();
+        super.onPause();
+    }
+
+    @Override
+    public void onLowMemory(){
+        super.onLowMemory();
+        mMapView.onLowMemory();
     }
 }
