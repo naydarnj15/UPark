@@ -104,11 +104,13 @@ public class ParkingDetailFragment extends Fragment {
             if (mItem.getmCourseShortDesc().equals("Yes")){
                 // Accessible spots available
                 shortdesc.setText("Accessible Parking Available");
-                icon.setColorFilter(Color.argb(255, 0, 255, 0));
+                icon.setColorFilter(Color.parseColor("#4CAF50"));
+                //icon.setColorFilter(Color.argb(255, 0, 255, 0));
             } else{
                 //No spots available
                 shortdesc.setText("Accessible Parking Full");
-                icon.setColorFilter(Color.argb(255, 255, 0, 0));
+                icon.setColorFilter(Color.parseColor("#FFE91E63"));
+                //icon.setColorFilter(Color.argb(255, 255, 0, 0));
             }
 
 
@@ -121,12 +123,14 @@ public class ParkingDetailFragment extends Fragment {
             if (mItem.getmCoursePrereqs().equals("Yes")){
                 // Accessible spots available
                 prereqs.setText("Parking Available");
-                icon.setColorFilter(Color.argb(255, 0, 255, 0));
+                icon.setColorFilter(Color.parseColor("#4CAF50"));
+                //icon.setColorFilter(Color.argb(255, 0, 255, 0));
 
             } else{
                 //No spots available
                 prereqs.setText("Parking Full");
-                icon.setColorFilter(Color.argb(255, 255, 0, 0));
+                icon.setColorFilter(Color.parseColor("#FFE91E63"));
+                //icon.setColorFilter(Color.argb(255, 255, 0, 0));
             }
 
         }
@@ -163,12 +167,15 @@ public class ParkingDetailFragment extends Fragment {
         if (updatedParkingArea.getString(Course.SHORT_DESC).equals("Yes")){
             // Accessible spots available
             shortdesc.setText("Accessible Parking Available");
-            icon.setColorFilter(Color.argb(255, 0, 255, 0));
+
+            icon.setColorFilter(Color.parseColor("#4CAF50"));
+           //icon.setColorFilter(Color.argb(255, 0, 255, 0));
 
         } else{
             //No spots available
             shortdesc.setText("Accessible Parking Full");
-            icon.setColorFilter(Color.argb(255, 255, 0, 0));
+            icon.setColorFilter(Color.parseColor("#FFE91E63"));
+            //icon.setColorFilter(Color.argb(255, 255, 0, 0));
         }
 
     }
@@ -186,12 +193,14 @@ public class ParkingDetailFragment extends Fragment {
         if (updatedParkingArea.getString(Course.PRE_REQS).equals("Yes")){
             // Accessible spots available
             prereqs.setText("Parking Available");
-            icon.setColorFilter(Color.argb(255, 0, 255, 0));
+            icon.setColorFilter(Color.parseColor("#4CAF50"));
+            //icon.setColorFilter(Color.argb(255, 0, 255, 0));
 
         } else{
             //No spots available
             prereqs.setText("Parking Full");
-            icon.setColorFilter(Color.argb(255, 255, 0, 0));
+            icon.setColorFilter(Color.parseColor("#FFE91E63"));
+            //icon.setColorFilter(Color.argb(255, 255, 0, 0));
         }
     }
 
