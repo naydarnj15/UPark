@@ -146,25 +146,24 @@ public class RegisterActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             if (s.startsWith("Unable to add the new course")) {
-                Toast.makeText(getApplicationContext(), "Unable to Update Parking Lot", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Unable to Update User", Toast.LENGTH_SHORT).show();
                 return;
             }
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 if (jsonObject.getBoolean("success")) {
-                    Toast.makeText(getApplicationContext(), "Parking Lot Updated Succesfully"
+                    Toast.makeText(getApplicationContext(), "User Added Successfully!"
                             , Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(RegisterActivity.this, SignInActivity.class);
                     startActivity(intent);
                 }
                 else {
-                    Toast.makeText(getApplicationContext(), "Parking Lot Failed to Update: "
-                                    + jsonObject.getString("error")
+                    Toast.makeText(getApplicationContext(), "User Failed to Add (Email Already Exists!)"
                             , Toast.LENGTH_LONG).show();
                     Log.e(REGISTER_MEMBER, jsonObject.getString("error"));
                 }
             } catch (JSONException e) {
-                Toast.makeText(getApplicationContext(), "JSON Parsing Error While Updating Parking Lot: "
+                Toast.makeText(getApplicationContext(), "JSON Parsing Error While Updating User: "
                                 + e.getMessage()
                         , Toast.LENGTH_LONG).show();
                 Log.e(REGISTER_MEMBER, e.getMessage());

@@ -234,20 +234,19 @@ public class LoginFragment extends Fragment {
                 JSONObject jsonObject = new JSONObject(s);
                 myJsonObject = jsonObject;
                 if (jsonObject.getBoolean("success")) {
-                    Toast.makeText(getActivity().getApplicationContext(), "Course Added successfully"
+                    Toast.makeText(getActivity().getApplicationContext(), "User added successfully"
                             , Toast.LENGTH_SHORT).show();
                     isLoggedIn = true;
                     mLoginFragmentListener.login(emailText.getText().toString(), pwdText.getText().toString());
                 }
                 else {
-                    Toast.makeText(getActivity().getApplicationContext(), "Course couldn't be added: "
+                    Toast.makeText(getActivity().getApplicationContext(), "User could not be added: "
                                     + jsonObject.getString("error")
                             , Toast.LENGTH_LONG).show();
                     Log.e(LOGIN, jsonObject.getString("error"));
                 }
             } catch (JSONException e) {
-                Toast.makeText(getActivity().getApplicationContext(), "JSON Parsing error on Adding course"
-                                + e.getMessage()
+                Toast.makeText(getActivity().getApplicationContext(), "Invalid Credentials"
                         , Toast.LENGTH_LONG).show();
                 Log.e(LOGIN, e.getMessage());
             }
