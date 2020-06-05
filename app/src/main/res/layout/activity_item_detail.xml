@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#800080"
     android:fitsSystemWindows="true"
     tools:context=".ParkingDetailActivity"
     tools:ignore="MergeRootFrame">
@@ -53,7 +52,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -81,7 +80,7 @@
 
                         android:gravity="center"
                         android:text="Are there any parking spots available at this lot?"
-                        android:textColor="#E8D3A2"
+                        android:textColor="#000000"
                         android:textSize="18sp"
                         android:textStyle="italic" />
 
@@ -128,6 +127,7 @@
                             android:layout_weight="1" />
 
                     </LinearLayout>
+
                     <View
                         android:id="@+id/divider"
                         android:layout_width="match_parent"
@@ -145,7 +145,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="Are there any accessible parking spots available at this lot?"
-                        android:textColor="#E8D3A2"
+                        android:textColor="#000000"
                         android:textSize="18sp"
                         android:textStyle="italic" />
 
