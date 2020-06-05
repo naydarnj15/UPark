@@ -39,6 +39,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -52,6 +53,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.ListView;
 import androidx.appcompat.widget.SearchView;
 import android.widget.TextView;
@@ -425,6 +427,23 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mIdView.setText(mValues.get(position).getmCourseId());
             holder.mContentView.setText(mValues.get(position).getmCourseShortDesc());
+            if (mValues.get(position).getmCourseShortDesc().equals("Yes")){
+                //Available, tint icons green
+                holder.mAccessibleView.setColorFilter(Color.parseColor("#4CAF50"));
+            } else {
+                //tint the icons red
+                holder.mAccessibleView.setColorFilter(Color.parseColor("#FFE91E63"));
+            }
+
+            if (mValues.get(position).getmCoursePrereqs().equals("Yes")){
+                //Available, tint icons green
+                holder.mParkingView.setColorFilter(Color.parseColor("#4CAF50"));
+            } else {
+                //tint the icons red
+                holder.mParkingView.setColorFilter(Color.parseColor("#FFE91E63"));
+            }
+
+
 
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
@@ -477,11 +496,15 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
         class ViewHolder extends RecyclerView.ViewHolder {
             final TextView mIdView;
             final TextView mContentView;
+            final ImageView mParkingView;
+            final ImageView mAccessibleView;
 
             ViewHolder(View view) {
                 super(view);
                 mIdView = (TextView) view.findViewById(R.id.id_text);
                 mContentView = (TextView) view.findViewById(R.id.content);
+                mParkingView = (ImageView) view.findViewById(R.id.parking_icon_list);
+                mAccessibleView = (ImageView) view.findViewById(R.id.accessible_icon_list);
             }
         }
     }
