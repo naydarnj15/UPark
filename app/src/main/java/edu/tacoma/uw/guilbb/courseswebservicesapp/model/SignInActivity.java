@@ -66,13 +66,13 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(checkMapServices()) {
-            if (mLocalPermGranted) {
-
-            } else {
-                getLocationPermission();
-            }
-        }
+//        if(checkMapServices()) {
+//            if (mLocalPermGranted) {
+//
+//            } else {
+//                getLocationPermission();
+//            }
+//        }
 
         setContentView(R.layout.activity_sign_in);
         //FacebookSdk.sdkInitialize(getApplicationContext());
@@ -225,15 +225,12 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
         switch (requestCode) {
             case PERMISSIONS_REQUEST_ENABLE_GPS: {
                 if(mLocalPermGranted){
-                    //getChatrooms();
                     Intent i = new Intent(this, ParkingListActivity.class);
                     startActivity(i);
                     finish();
                 }
                 else{
                     getLocationPermission();
-
-
                 }
             }
         }
