@@ -493,10 +493,10 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
         LatLng firstLotPosition = new LatLng(Double.parseDouble(mCourseListForGeo.get(0).getmLat()),
                 Double.parseDouble(mCourseListForGeo.get(0).getmLong()));
 
-        double bottomBoundary = firstLotPosition.latitude - 0.1 ;
-        double leftBoundary = firstLotPosition.longitude - 0.1;
-        double topBoundary = firstLotPosition.latitude + 0.1;
-        double rightBoundary = firstLotPosition.longitude + 0.1;
+        double bottomBoundary = firstLotPosition.latitude - 0.005 ;
+        double leftBoundary = firstLotPosition.longitude - 0.005;
+        double topBoundary = firstLotPosition.latitude + 0.005;
+        double rightBoundary = firstLotPosition.longitude + 0.005;
 
 
         mMapBoundary = new LatLngBounds(
@@ -504,6 +504,14 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
                 new LatLng(topBoundary, rightBoundary));
 
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(mMapBoundary, 0));
+        setMarkers();
+    }
+
+    private void setMarkers(){
+        for(Course lot: mCourseListForGeo){
+            LatLng lotPosition = new LatLng(Double.parseDouble(lot.getmLat()), Double.parseDouble(lot.getmLong()));
+            mGoogleMap.addMarker(new MarkerOptions().position(lotPosition).title(lot.getmCourseId()));
+        }
     }
 
     private void initializeGoogleMap(Bundle savedInstanceState){
