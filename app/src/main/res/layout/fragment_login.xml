@@ -37,47 +37,58 @@
         android:id="@+id/email_address_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
+        android:layout_marginLeft="32dp"
         android:layout_marginTop="100dp"
+        android:layout_marginRight="32dp"
         android:layout_marginBottom="25dp"
         android:background="#FFFFFF"
         android:hint="@string/enter_your_email_hint"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:textSize="24sp" />
 
     <EditText
         android:id="@+id/password_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
         android:layout_marginBottom="15dp"
         android:background="#FFFFFF"
         android:hint="@string/enter_your_password_hint"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:textSize="24sp" />
+
 
     <Button
         android:id="@+id/btn_sign_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginBottom="15dp"
-        android:background="#E8D3A2"
-        android:text="@string/btn_sign_in" />
+        android:layout_gravity="center"
+
+        android:layout_weight="0"
+        android:text="Sign In" />
 
     <Button
         android:id="@+id/btn_create_acc"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:background="#E8D3A2"
+        android:layout_gravity="center"
+        android:layout_weight="0"
         android:text="@string/btn_create_acc" />
 
+
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="32dp"
+        android:background="?android:attr/listDivider" />
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
         android:layout_marginBottom="30dp" />
 
 
