@@ -14,7 +14,7 @@ import edu.tacoma.uw.guilbb.courseswebservicesapp.R;
 import edu.tacoma.uw.guilbb.courseswebservicesapp.model.Course;
 
 public class ParkingDB {
-    public static final int DB_VERSION = 1;
+    public static final int DB_VERSION = 2;
     public static final String DB_NAME = "Course.db";
     private SQLiteDatabase mSQLiteDatabase;
     private CourseDBHelper mCourseDBHelper;
@@ -60,12 +60,14 @@ public class ParkingDB {
      * @param prereqs
      * @return true or false
      */
-    public boolean insertCourse(String id, String shortDesc, String longDesc, String prereqs) {
+    public boolean insertCourse(String id, String shortDesc, String longDesc, String prereqs, String lat, String theLong) {
         ContentValues contentValues = new ContentValues();
         contentValues.put("id", id);
         contentValues.put("shortDesc", shortDesc);
         contentValues.put("longDesc", longDesc);
         contentValues.put("prereqs", prereqs);
+        contentValues.put(Course.LAT, lat);
+        contentValues.put(Course.LONG, theLong);
 
         long rowId = mSQLiteDatabase.insert("Course", null, contentValues);
         return rowId != -1;
@@ -91,7 +93,7 @@ public class ParkingDB {
     public List<Course> getCourses() {
 
         String[] columns = {
-                "id", "shortDesc", "longDesc", "prereqs"
+                "id", "shortDesc", "longDesc", "prereqs", Course.LAT, Course.LONG
         };
 
         Cursor c = mSQLiteDatabase.query(
@@ -110,7 +112,9 @@ public class ParkingDB {
             String shortDesc = c.getString(1);
             String longDesc = c.getString(2);
             String prereqs = c.getString(3);
-            Course course = new Course(id, shortDesc, longDesc, prereqs);
+            String lat = c.getString(4);
+            String longit = c.getString(5);
+            Course course = new Course(id, shortDesc, longDesc, prereqs, lat, longit);
             list.add(course);
             c.moveToNext();
         }

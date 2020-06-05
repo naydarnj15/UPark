@@ -345,7 +345,9 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
                         mCourseDB.insertCourse(course.getmCourseId(),
                                 course.getmCourseShortDesc(),
                                 course.getmCourseLongDesc(),
-                                course.getmCoursePrereqs());
+                                course.getmCoursePrereqs(),
+                                course.getmLat(),
+                                course.getmLong());
                     }
 
                     if (!mCourseList.isEmpty()) {

@@ -87,7 +87,9 @@ public class ParkingAddFragment extends Fragment {
                 String courseShortDesc = courseShortDescEditText.getText().toString();
                 String courseLongDesc = courseLongDescEditText.getText().toString();
                 String coursePrereqs = coursePrereqsEditText.getText().toString();
-                Course course = new Course (courseId, courseShortDesc, courseLongDesc, coursePrereqs);
+                String courseLat = "doesnt matter there is no button for this";
+                String courseLong = "doesnt matter there is no button for this";
+                Course course = new Course (courseId, courseShortDesc, courseLongDesc, coursePrereqs, courseLat, courseLong);
                 if (mAddListener != null) {
                     mAddListener.addCourse(course);
                 }
