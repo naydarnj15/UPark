@@ -64,6 +64,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONException;
@@ -91,7 +99,7 @@ import edu.tacoma.uw.guilbb.courseswebservicesapp.model.SignInActivity;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class ParkingListActivity extends AppCompatActivity {
+public class ParkingListActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -100,10 +108,18 @@ public class ParkingListActivity extends AppCompatActivity {
     private boolean mTwoPane;
     private ListView listView;
     private List<Course> mCourseList;
+    private List<Course> mCourseListForGeo;
     //private List<Course> parkingList;
     private RecyclerView mRecyclerView;
     private SimpleItemRecyclerViewAdapter adapter;
     private ParkingDB mCourseDB;
+
+
+    private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
+    private MapView mMapView;
+
+    private GoogleMap mGoogleMap;
+    private LatLngBounds mMapBoundary;
     //ArrayAdapter<Course> adapter;
 
     @Override
@@ -116,6 +132,11 @@ public class ParkingListActivity extends AppCompatActivity {
         getSupportActionBar().setIcon(R.drawable.u_park_logo);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         toolbar.setTitle(getTitle());
+
+        /*ParkingMapFragment fragment = new ParkingMapFragment();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.item_detail_container, fragment)
+                .commit();*/
 
         //listView = findViewById(R.id.myListView);
         //mCourseList = new ArrayList<>();
@@ -152,6 +173,16 @@ public class ParkingListActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.item_list);
         assert mRecyclerView != null;
         setupRecyclerView((RecyclerView) mRecyclerView);
+
+        //MAP Stuff!!
+
+        ///View view = inflater.inflate(R.layout.activity_item_list, container, false);
+        mMapView = (MapView) findViewById(R.id.user_list_map);
+
+        initializeGoogleMap(savedInstanceState);
+
+
+
     }
 
     @Override
@@ -161,6 +192,7 @@ public class ParkingListActivity extends AppCompatActivity {
             new CoursesTask().execute(getString(R.string.get_courses));
         }*/
         super.onResume();
+        mMapView.onResume();
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -309,6 +341,10 @@ public class ParkingListActivity extends AppCompatActivity {
                 if (jsonObject.getBoolean("success")) {
                     mCourseList = Course.parseCourseJson(
                             jsonObject.getString("names"));
+                    mCourseListForGeo = Course.parseCourseJson(
+                            jsonObject.getString("names"));
+
+                    setCameraView();
                     if (mCourseDB == null) {
                         mCourseDB = new ParkingDB(getApplicationContext());
                     }
@@ -322,7 +358,9 @@ public class ParkingListActivity extends AppCompatActivity {
                         mCourseDB.insertCourse(course.getmCourseId(),
                                 course.getmCourseShortDesc(),
                                 course.getmCourseLongDesc(),
-                                course.getmCoursePrereqs());
+                                course.getmCoursePrereqs(),
+                                course.getmLat(),
+                                course.getmLong());
                     }
 
                     if (!mCourseList.isEmpty()) {
@@ -469,5 +507,128 @@ public class ParkingListActivity extends AppCompatActivity {
                 mAccessibleView = (ImageView) view.findViewById(R.id.accessible_icon_list);
             }
         }
+    }
+
+//------------------------------------------------------------------------------------------------
+    //void
+
+    private void setCameraView(){
+
+        LatLng firstLotPosition = new LatLng(Double.parseDouble(mCourseListForGeo.get(0).getmLat()),
+                Double.parseDouble(mCourseListForGeo.get(0).getmLong()));
+
+        double bottomBoundary = firstLotPosition.latitude - 0.005 ;
+        double leftBoundary = firstLotPosition.longitude - 0.002;
+        double topBoundary = firstLotPosition.latitude + 0.005;
+        double rightBoundary = firstLotPosition.longitude + 0.002;
+
+
+        mMapBoundary = new LatLngBounds(
+                new LatLng(bottomBoundary, leftBoundary),
+                new LatLng(topBoundary, rightBoundary));
+
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(mMapBoundary, 0));
+        setMarkers();
+    }
+
+    private void setMarkers(){
+        for(Course lot: mCourseListForGeo){
+            //public final Course currentLot = lot;
+            LatLng lotPosition = new LatLng(Double.parseDouble(lot.getmLat()), Double.parseDouble(lot.getmLong()));
+            Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(lotPosition).title(lot.getmCourseId()));
+
+
+
+
+        }
+
+        final Context context = this;
+
+        mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+
+                Course clickedLot = mCourseListForGeo.get(0);// idk it was rly mad and wanted me to initalize
+                boolean foundLot= false;
+
+                for(Course lot: mCourseListForGeo){
+                    if(marker.getTitle().contentEquals(lot.getmCourseId())){
+                        clickedLot = lot;
+                        foundLot = true;
+                    }
+                }
+
+
+
+                if(foundLot){
+                    foundLot = false;
+                    if(mTwoPane){
+                        Bundle arguments = new Bundle();
+                        arguments.putSerializable(ParkingDetailFragment.ARG_ITEM_ID, clickedLot);
+                        ParkingDetailFragment fragment = new ParkingDetailFragment();
+                        fragment.setArguments(arguments);
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.item_detail_container, fragment)
+                                .commit();
+                    } else {
+
+                        Intent intent = new Intent(context, ParkingDetailActivity.class);
+                        intent.putExtra(ParkingDetailFragment.ARG_ITEM_ID, clickedLot);
+
+                        context.startActivity(intent);
+                    }
+
+                }
+
+
+
+            }
+        });
+    }
+
+
+
+    private void initializeGoogleMap(Bundle savedInstanceState){
+        Bundle mapViewBundle = null;
+        if(savedInstanceState != null){
+            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
+        }
+
+        mMapView.onCreate(mapViewBundle);
+        mMapView.getMapAsync(this);
+
+
+    }
+
+
+    /*@Override
+    public void onResume(){
+        super.onResume();
+        mMapView.onResume();
+    }*/
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        mMapView.onStop();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(0,0)).title("Marker"));
+        mGoogleMap = googleMap;
+    }
+
+    @Override
+    public void onPause(){
+        mMapView.onPause();
+        super.onPause();
+    }
+
+    @Override
+    public void onLowMemory(){
+        super.onLowMemory();
+        mMapView.onLowMemory();
     }
 }

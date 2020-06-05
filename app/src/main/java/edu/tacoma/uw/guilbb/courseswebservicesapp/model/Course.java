@@ -14,19 +14,26 @@ public class Course implements Serializable {
     private String mCourseShortDesc;
     private String mCourseLongDesc;
     private String mCoursePrereqs;
+    private String mLat;
+    private String mLong;
 
     public static final String ID = "id";
     public static final String SHORT_DESC = "shortdesc";
     public static final String LONG_DESC = "longdesc";
     public static final String PRE_REQS = "prereqs";
+    public static final String LAT = "lat";
+    public static final String LONG = "long";
+
     public static final String AVAILABILITY = "availability";
 
     public Course(String theCourseId, String theCourseShortDesc, String theCourseLongDesc,
-           String theCoursePrereqs){//, String theAvailability){
+           String theCoursePrereqs, String theLat, String theLong){//, String theAvailability){
         mCourseId = theCourseId;
         mCourseShortDesc = theCourseShortDesc;
         mCourseLongDesc = theCourseLongDesc;
         mCoursePrereqs = theCoursePrereqs;
+        mLat = theLat;
+        mLong= theLong;
         //mAvailability = theAvailability;
     }
 
@@ -44,6 +51,22 @@ public class Course implements Serializable {
 
     public String getmCourseId() {
         return mCourseId;
+    }
+
+    public String getmLat() {
+        return mLat;
+    }
+
+    public String getmLong() {
+        return mLong;
+    }
+
+    public void setmLong(String mLong) {
+        this.mLong = mLong;
+    }
+
+    public void setmLat(String mLat) {
+        this.mLat = mLat;
     }
 
     public void setmCourseShortDesc(String mCourseShortDesc) {
@@ -71,7 +94,8 @@ public class Course implements Serializable {
             for(int i = 0; i < arr.length(); i++){
                 JSONObject obj = arr.getJSONObject(i);
                 Course course = new Course(obj.getString(Course.ID), obj.getString(Course.SHORT_DESC),
-                        obj.getString(Course.LONG_DESC), obj.getString(Course.PRE_REQS));
+                        obj.getString(Course.LONG_DESC), obj.getString(Course.PRE_REQS),
+                        obj.getString(Course.LAT), obj.getString(Course.LONG));
                 courseList.add(course);
             }
         }
