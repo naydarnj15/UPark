@@ -3,7 +3,7 @@
 <string name="CREATE_COURSE_SQL">
     CREATE TABLE IF NOT EXISTS Course
     (id TEXT PRIMARY KEY, shortDesc TEXT,
-    longDesc TEXT, prereqs TEXT, availability BOOLEAN)
+    longDesc TEXT, prereqs TEXT, lat TEXT, long TEXT)
 </string>
 
 <string name="DROP_COURSE_SQL">
