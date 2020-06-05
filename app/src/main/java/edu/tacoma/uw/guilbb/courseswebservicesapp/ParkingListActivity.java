@@ -62,10 +62,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -103,6 +105,7 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
     private boolean mTwoPane;
     private ListView listView;
     private List<Course> mCourseList;
+    private List<Course> mCourseListForGeo;
     //private List<Course> parkingList;
     private RecyclerView mRecyclerView;
     private SimpleItemRecyclerViewAdapter adapter;
@@ -111,6 +114,9 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
 
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     private MapView mMapView;
+
+    private GoogleMap mGoogleMap;
+    private LatLngBounds mMapBoundary;
     //ArrayAdapter<Course> adapter;
 
     @Override
@@ -332,6 +338,10 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
                 if (jsonObject.getBoolean("success")) {
                     mCourseList = Course.parseCourseJson(
                             jsonObject.getString("names"));
+                    mCourseListForGeo = Course.parseCourseJson(
+                            jsonObject.getString("names"));
+
+                    setCameraView();
                     if (mCourseDB == null) {
                         mCourseDB = new ParkingDB(getApplicationContext());
                     }
@@ -476,6 +486,26 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
     }
 
 //------------------------------------------------------------------------------------------------
+    //void
+
+    private void setCameraView(){
+
+        LatLng firstLotPosition = new LatLng(Double.parseDouble(mCourseListForGeo.get(0).getmLat()),
+                Double.parseDouble(mCourseListForGeo.get(0).getmLong()));
+
+        double bottomBoundary = firstLotPosition.latitude - 0.1 ;
+        double leftBoundary = firstLotPosition.longitude - 0.1;
+        double topBoundary = firstLotPosition.latitude + 0.1;
+        double rightBoundary = firstLotPosition.longitude + 0.1;
+
+
+        mMapBoundary = new LatLngBounds(
+                new LatLng(bottomBoundary, leftBoundary),
+                new LatLng(topBoundary, rightBoundary));
+
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(mMapBoundary, 0));
+    }
+
     private void initializeGoogleMap(Bundle savedInstanceState){
         Bundle mapViewBundle = null;
         if(savedInstanceState != null){
@@ -484,6 +514,8 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
 
         mMapView.onCreate(mapViewBundle);
         mMapView.getMapAsync(this);
+
+
     }
 
 
@@ -502,6 +534,7 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
     @Override
     public void onMapReady(GoogleMap googleMap) {
         googleMap.addMarker(new MarkerOptions().position(new LatLng(0,0)).title("Marker"));
+        mGoogleMap = googleMap;
     }
 
     @Override
