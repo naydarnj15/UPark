@@ -68,6 +68,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -509,10 +510,62 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
 
     private void setMarkers(){
         for(Course lot: mCourseListForGeo){
+            //public final Course currentLot = lot;
             LatLng lotPosition = new LatLng(Double.parseDouble(lot.getmLat()), Double.parseDouble(lot.getmLong()));
-            mGoogleMap.addMarker(new MarkerOptions().position(lotPosition).title(lot.getmCourseId()));
+            Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(lotPosition).title(lot.getmCourseId()));
+
+
+
+
         }
+
+        final Context context = this;
+
+        mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                // TODO Auto-generated method stub
+
+                Course clickedLot = mCourseListForGeo.get(0);// idk it was rly mad and wanted me to initalize
+                boolean foundLot= false;
+
+                for(Course lot: mCourseListForGeo){
+                    if(marker.getTitle().contentEquals(lot.getmCourseId())){
+                        clickedLot = lot;
+                        foundLot = true;
+                    }
+                }
+
+
+
+                if(foundLot){
+                    foundLot = false;
+                    if(mTwoPane){
+                        Bundle arguments = new Bundle();
+                        arguments.putSerializable(ParkingDetailFragment.ARG_ITEM_ID, clickedLot);
+                        ParkingDetailFragment fragment = new ParkingDetailFragment();
+                        fragment.setArguments(arguments);
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.item_detail_container, fragment)
+                                .commit();
+                    } else {
+
+                        Intent intent = new Intent(context, ParkingDetailActivity.class);
+                        intent.putExtra(ParkingDetailFragment.ARG_ITEM_ID, clickedLot);
+
+                        context.startActivity(intent);
+                    }
+
+                }
+
+
+
+            }
+        });
     }
+
+
 
     private void initializeGoogleMap(Bundle savedInstanceState){
         Bundle mapViewBundle = null;
