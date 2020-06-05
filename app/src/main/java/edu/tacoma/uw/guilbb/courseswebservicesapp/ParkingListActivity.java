@@ -495,9 +495,9 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
                 Double.parseDouble(mCourseListForGeo.get(0).getmLong()));
 
         double bottomBoundary = firstLotPosition.latitude - 0.005 ;
-        double leftBoundary = firstLotPosition.longitude - 0.005;
+        double leftBoundary = firstLotPosition.longitude - 0.002;
         double topBoundary = firstLotPosition.latitude + 0.005;
-        double rightBoundary = firstLotPosition.longitude + 0.005;
+        double rightBoundary = firstLotPosition.longitude + 0.002;
 
 
         mMapBoundary = new LatLngBounds(
@@ -525,7 +525,6 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
 
             @Override
             public void onInfoWindowClick(Marker marker) {
-                // TODO Auto-generated method stub
 
                 Course clickedLot = mCourseListForGeo.get(0);// idk it was rly mad and wanted me to initalize
                 boolean foundLot= false;

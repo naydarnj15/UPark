@@ -66,6 +66,14 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(checkMapServices()) {
+            if (mLocalPermGranted) {
+
+            } else {
+                getLocationPermission();
+            }
+        }
+
         setContentView(R.layout.activity_sign_in);
         //FacebookSdk.sdkInitialize(getApplicationContext());
         //AppEventsLogger.activateApp(this);
@@ -224,6 +232,8 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
                 }
                 else{
                     getLocationPermission();
+
+
                 }
             }
         }
