@@ -4,58 +4,71 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#800080"
+    android:orientation="vertical"
+    android:padding="32dp"
     tools:context=".LoginFragment">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="false"
-        android:baselineAlignBottom="false"
-        android:src="@mipmap/u_park_logo"
-        android:translationX="110dp"
-        android:translationY="118dp" />
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:padding="32dp">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="160dp"
-        android:layout_marginTop="70dp"
-        android:fontFamily="casual"
-        android:gravity="center"
-        android:lineSpacingExtra="8sp"
-        android:text="UPark"
-        android:textColor="#E8D3A2"
-        android:textSize="36dp"
-        android:textStyle="bold"
-        android:typeface="serif" />
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:adjustViewBounds="false"
+            android:baselineAlignBottom="false"
+            android:src="@mipmap/u_park_logo" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="casual"
+            android:gravity="center"
+
+            android:text="UPark"
+            android:textColor="#E8D3A2"
+            android:textSize="36dp"
+            android:textStyle="bold"
+            android:typeface="serif" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
 
     <EditText
         android:id="@+id/email_address_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginBottom="25dp"
-        android:background="#FFFFFF"
+        android:backgroundTint="#E8D3A2"
         android:hint="@string/enter_your_email_hint"
         android:inputType="textEmailAddress"
+        android:textColor="#E8D3A2"
+        android:textColorHint="#E8D3A2"
         android:textSize="24sp" />
 
     <EditText
         android:id="@+id/password_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginBottom="15dp"
-        android:background="#FFFFFF"
+        android:backgroundTint="#E8D3A2"
         android:hint="@string/enter_your_password_hint"
+        android:textColor="#E8D3A2"
         android:inputType="textPassword"
+        android:textColorHint="#E8D3A2"
         android:textSize="24sp" />
 
 
@@ -64,8 +77,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-
+        android:layout_margin="16dp"
         android:layout_weight="0"
+        android:backgroundTint="#E8D3A2"
         android:text="Sign In" />
 
     <Button
@@ -74,6 +88,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="0"
+        android:backgroundTint="#E8D3A2"
         android:text="@string/btn_create_acc" />
 
 
