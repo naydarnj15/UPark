@@ -7,6 +7,10 @@ import android.widget.TextView;
 
 public class NotificationActivity extends AppCompatActivity {
 
+    /**
+     * Creates the Notification Activity from the saved instance state
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

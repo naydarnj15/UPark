@@ -67,6 +67,10 @@ public class ParkingDetailFragment extends Fragment {
     public ParkingDetailFragment() {
     }
 
+    /**
+     * Creates the Parking Detail fragment from the saved instance state
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +93,14 @@ public class ParkingDetailFragment extends Fragment {
         }
     }
 
+    /**
+     * Sets up View for the Parking Detail screen. Handles setting text and initial coloring of
+     * availability icons
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -154,7 +166,7 @@ public class ParkingDetailFragment extends Fragment {
     }
 
     /**
-     * This method updates the text that displays weather there is handicap parking available
+     * This method updates the text that displays whether there is handicap parking available
      * @param updatedParkingArea    A json object with the updated handicap availability info, this
      *                              should be coming from ParkingDetailActivity
      * @throws JSONException        If there is something wrong with the json passed in as a parameter
@@ -205,36 +217,11 @@ public class ParkingDetailFragment extends Fragment {
     }
 
 
-
-
-
-
     private Runnable mUpdate = new Runnable() {
         public void run() {
-
             if (mItem != null) {
-                /*longdesc.setText( mItem.getmCourseLongDesc()+ "$/hr");
-
-                shortdesc.setText("Handicap parking???: " +
-                        mItem.getmCourseShortDesc());
-
-                id.setText(
-                        mItem.getmCourseId());
-
-                prereqs.setText(
-                        "Empty spots?: " +mItem.getmCoursePrereqs());
-
-
-
-                getFragmentManager().beginTransaction().detach(thisFragment).attach(thisFragment).commit();*/
-
             }
-            /*Toast.makeText(getActivity().getApplicationContext(), "REFRESH!!" + mItem.getmCoursePrereqs(), Toast.LENGTH_SHORT).show();*/
-
-
-
         }
     };
-
 
 }

@@ -47,6 +47,8 @@ import static edu.tacoma.uw.guilbb.courseswebservicesapp.App.CHANNEL_1_ID;
  * activity is only used on narrow width devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
  * in a {@link ParkingListActivity}.
+ *
+ * This activity shows the details of a single parking lot -- availability, name, and pricing
  */
 public class ParkingDetailActivity extends AppCompatActivity
         implements  ParkingAddFragment.AddListener {
@@ -64,7 +66,14 @@ public class ParkingDetailActivity extends AppCompatActivity
     private NotificationManagerCompat notificationManager;
 
 
+
     private class UpdateCourseAsyncTask extends AsyncTask<String, Void, String> {
+
+        /**
+         * Sends parking lot information to specified URL in JSON format
+         * @param urls
+         * @return http response from the url
+         */
         @Override
         protected String doInBackground(String... urls) {
             String response = "";
@@ -94,7 +103,7 @@ public class ParkingDetailActivity extends AppCompatActivity
                     }
 
                 } catch (Exception e) {
-                    response = "Unable to add the new course, Reason: "
+                    response = "Unable to update the parking lot, Reason: "
                             + e.getMessage();
                 } finally {
                     if (urlConnection != null)
@@ -103,6 +112,11 @@ public class ParkingDetailActivity extends AppCompatActivity
             }
             return response;
         }
+
+        /**
+         * Displays a Toast based on the results of the POST request
+         * @param s
+         */
         @Override
         protected void onPostExecute(String s) {
             if (s.startsWith("Unable to update the course")) {
@@ -131,6 +145,11 @@ public class ParkingDetailActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Displays a notification that a parking lot has become available
+     * @param v
+     * @param courseID The name of the parking lot
+     */
     public void sendOnChannel1(View v, String courseID) {
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
@@ -144,7 +163,10 @@ public class ParkingDetailActivity extends AppCompatActivity
         notificationManager.notify(1, notification);
     }
 
-
+    /**
+     * Creates the Parking Detail Activity fragment from the saved instance state
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -289,7 +311,11 @@ public class ParkingDetailActivity extends AppCompatActivity
     }
 
 
-
+    /**
+     * Navigates to the Parking List activity when the back button is clicked in the app
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -307,6 +333,12 @@ public class ParkingDetailActivity extends AppCompatActivity
     }
 
     private class AddCourseAsyncTask extends AsyncTask<String, Void, String> {
+
+        /**
+         * Sends parking lot information to specified URL in JSON format
+         * @param urls
+         * @return
+         */
         @Override
         protected String doInBackground(String... urls) {
             String response = "";
@@ -336,7 +368,7 @@ public class ParkingDetailActivity extends AppCompatActivity
                     }
 
                 } catch (Exception e) {
-                    response = "Unable to add the new course, Reason: "
+                    response = "Unable to update the parking lot, Reason: "
                             + e.getMessage();
                 } finally {
                     if (urlConnection != null)
@@ -346,7 +378,10 @@ public class ParkingDetailActivity extends AppCompatActivity
             return response;
         }
 
-
+        /**
+         * Displays a Toast based on the results of the POST request
+         * @param s
+         */
         @Override
         protected void onPostExecute(String s) {
             if (s.startsWith("Unable to add the new course")) {
@@ -445,7 +480,10 @@ public class ParkingDetailActivity extends AppCompatActivity
         }
     }*/
 
-
+    /**
+     * Builds a JSON Object based on the 'course' and As
+     * @param course
+     */
     @Override
     public void addCourse(Course course) {
         StringBuilder url = new StringBuilder(getString(R.string.add_course));
@@ -466,6 +504,11 @@ public class ParkingDetailActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Updates a parking lot based on the availabity passed in. Automatically handles building
+     * the json and sending the request to the backend
+     * @param newAvailability
+     */
     public void updateCourse(String newAvailability){
         StringBuilder url = new StringBuilder(getString(R.string.update_course));
 
@@ -504,6 +547,11 @@ public class ParkingDetailActivity extends AppCompatActivity
         }
     }*/
 
+    /**
+     * Updates whether or not there is available accessible parking in a given parking lot (course)
+     * @param course
+     * @param newHandicapAvailability
+     */
     public void updateHandicapParking(Course course, String newHandicapAvailability){
         StringBuilder url = new StringBuilder(getString(R.string.update_course));
 
@@ -540,9 +588,4 @@ public class ParkingDetailActivity extends AppCompatActivity
     public interface FragmentRefreshListener{
         void onRefresh();
     }
-
-
-
-
-
 }
