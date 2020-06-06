@@ -413,7 +413,7 @@ public class ParkingDetailActivity extends AppCompatActivity
         }
     }
 
-    //TODO: Refactor to updateParkingAvailability
+
     public void updateCourse(Course course, String newAvailability){
         StringBuilder url = new StringBuilder(getString(R.string.update_course));
 
