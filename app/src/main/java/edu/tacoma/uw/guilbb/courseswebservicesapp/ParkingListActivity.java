@@ -274,7 +274,8 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
                     intent.setType("text/plain");
                     String shareBody = "Please consider a parking lot at latitude: "+ myLocal.latitude+
                             " longitude: "+ myLocal.longitude;
-                    String shareSub = "Parking Lot Request";
+                    String shareSub = "Parking lot request at latitude: "+ myLocal.latitude+
+                            " longitude: "+ myLocal.longitude;
                     String shareEmail = "UParkDevelopers@gmail.com";
                     intent.putExtra(Intent.EXTRA_SUBJECT, shareBody);
                     intent.putExtra(Intent.EXTRA_TEXT, shareSub);
@@ -292,7 +293,7 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
 
                     builder.setMessage("Your request to add a new parking lot at your current location-- latitude: "
                             + myLocal.latitude+ " and longitude: " + myLocal.longitude+
-                            " will be reviewed by our team!\n\n We appreciate your input!")
+                            " will be reviewed by our team!\n")
                             .setTitle(R.string.dialog_title);
 
                 }
