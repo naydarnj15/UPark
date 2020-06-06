@@ -37,11 +37,14 @@ import java.util.List;*/
 import android.Manifest;
 import android.app.Application;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -60,6 +63,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 
 import android.widget.TextView;
@@ -90,6 +94,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -97,6 +102,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 import edu.tacoma.uw.guilbb.courseswebservicesapp.data.ParkingDB;
 import edu.tacoma.uw.guilbb.courseswebservicesapp.model.Course;
@@ -196,16 +202,101 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
         mMapView = (MapView) findViewById(R.id.user_list_map);
 
         initializeGoogleMap(savedInstanceState);
-        getLastKnownLocation();
+        final LatLng myLocal = getLastKnownLocation();
+        boolean locationUnknown = false;
+        if(myLocal.longitude == 404 || myLocal.latitude == 404){
+            locationUnknown = true;
+        }
+
+        final boolean locationUnkownFinal = locationUnknown;
+        final Context context = this;
+
+        FloatingActionButton requestLot = (FloatingActionButton) findViewById(R.id.request_lot);
+        requestLot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                String shareBody = "Your body here";
+                String shareSub = "Your Subject here";
+                intent.putExtra(Intent.EXTRA_SUBJECT, shareBody);
+                intent.putExtra(Intent.EXTRA_TEXT, shareSub);
+                startActivity(Intent.createChooser(intent, "ShareUsing"));*/
+
+                //-------------------------------------------------------------------------
+                //nvm have to pay
+                /*Geocoder geocoder;
+                List<Address> addresses;
+                addresses = new ArrayList<Address>();
+                geocoder = new Geocoder(context, Locale.getDefault());
+                boolean gotAddress = false;
+
+                String address = ""; // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                String city= "";
+                String state= "";
+                String country= "";
+                String postalCode= "";
+                String knownName= "";
+
+                try {
+                    addresses = geocoder.getFromLocation(myLocal.latitude, myLocal.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                    gotAddress = true;
+                    address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                    city = addresses.get(0).getLocality();
+                    state = addresses.get(0).getAdminArea();
+                    country = addresses.get(0).getCountryName();
+                    postalCode = addresses.get(0).getPostalCode();
+                    knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }*/
+
+
+                //------------------------------------------------------------------------------
+
+                // 1. Instantiate an <code><a href="/reference/android/app/AlertDialog.Builder.html">AlertDialog.Builder</a></code> with its constructor
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+                // Add the buttons
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked OK button
+                    }
+                });
+
+                if(locationUnkownFinal){
+                    builder.setMessage("Your lot request was not set because we could not determine your location")
+                            .setTitle("We could not locate you!");
+                }else{
+                    builder.setMessage("Your request to add a new parking lot at your current location-- latitude: "
+                            + myLocal.latitude+ " and longitude: " + myLocal.longitude+
+                            " will be reviewed by our team!\n\n We appreciate your input!")
+                            .setTitle(R.string.dialog_title);
+
+                }
+
+
+
+
+
+                // 3. Get the <code><a href="/reference/android/app/AlertDialog.html">AlertDialog</a></code> from <code><a href="/reference/android/app/AlertDialog.Builder.html#create()">create()</a></code>
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
 
     }
 
-    private void getLastKnownLocation() {
+    //returns 404 404 if error
+    private LatLng getLastKnownLocation() {
         Log.e(TAG, "getLastKnownLocation: called");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            return;
+            return new LatLng(404,404);
         }
+
+        final locationObject yourLocation =  new locationObject();
         mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
@@ -213,9 +304,14 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
                     Location location = task.getResult();
                     Log.e(TAG, "onComplete: latitude: " + location.getLatitude() );
                     Log.e(TAG, "onComplete: longitude: " + location.getLongitude() );
+                    yourLocation.setLatitude(location.getLatitude());
+                    yourLocation.setLongitude(location.getLongitude());
+
                 }
             }
         });
+
+        return yourLocation.getLatLng();
     }
 
     @Override
@@ -251,6 +347,25 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
             }
 
         }
+    }
+
+
+    private class locationObject{
+        double longitude = 404;
+        double latitude= 404;
+
+        public void setLongitude(double theLong){
+            longitude = theLong;
+        }
+
+        public void setLatitude(double theLat){
+            latitude = theLat;
+        }
+
+        public LatLng getLatLng(){
+            return new LatLng(latitude, longitude);
+        }
+
     }
 
     private void launchCourseAddFragment(){
