@@ -51,6 +51,11 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
+/**
+ * An activity representing the sign in page. Handles all permissions of the app (since it is the
+ * first screen user will see on install), and allows users to sign in with their account, or to
+ * create a new account.
+ */
 
 public class SignInActivity extends AppCompatActivity implements LoginFragment.LoginFragmentListener, LoginFragment.RegisterFragmentListener {
 
@@ -68,17 +73,14 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
     public static final int PERMISSIONS_REQUEST_ENABLE_GPS = 9002;
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9003;
 
+    /**
+     * Creates the Sign In Activity from the saved instance state
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if(checkMapServices()) {
-//            if (mLocalPermGranted) {
-//
-//            } else {
-//                getLocationPermission();
-//            }
-//        }
-        //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
         setContentView(R.layout.activity_sign_in);
         //FacebookSdk.sdkInitialize(getApplicationContext());
         //AppEventsLogger.activateApp(this);
@@ -131,6 +133,10 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
 
     //___________________________________________________________
 
+    /**
+     * Ensure that we have permission for location services
+     * @return
+     */
     private boolean checkMapServices(){
         if(isServicesOK()){
             if(isMapsEnabled()){
@@ -140,6 +146,9 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
         return false;
     }
 
+    /**
+     * Generates an alert to ask the user to enable location services
+     */
     private void buildAlertMessageNoGps() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("This application requires GPS to work properly, do you want to enable it?")
@@ -154,6 +163,11 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
         alert.show();
     }
 
+    /**
+     * Returns true if location services is already enable, returns false if not (and asks the user
+     * to enable it)
+     * @return
+     */
     public boolean isMapsEnabled(){
         final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 
@@ -164,12 +178,13 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
         return true;
     }
 
+    /**
+     * Request location permission, so that we can get the location of the
+     * device. The result of the permission request is handled by a callback,
+     * onRequestPermissionsResult.
+     */
     private void getLocationPermission() {
-        /*
-         * Request location permission, so that we can get the location of the
-         * device. The result of the permission request is handled by a callback,
-         * onRequestPermissionsResult.
-         */
+
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -185,6 +200,10 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
         }
     }
 
+    /**
+     * Check to see if the map services is functional on this device
+     * @return
+     */
     public boolean isServicesOK(){
         Log.d(TAG, "isServicesOK: checking google services version");
 
@@ -206,6 +225,12 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
         return false;
     }
 
+    /**
+     * Returns true if local position information was approved by users
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[],
@@ -222,6 +247,13 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
         }
     }
 
+    /**
+     * Starts the Parking list activity if the user has already given location permissions to the app
+     * otherwise will request location permissions. User will be required to sign in again.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
@@ -246,12 +278,11 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
     //__________________________________________________________________
 
 
-    /*@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
-    }*/
-
+    /**
+     * Logs user in if they have location permission.
+     * @param email
+     * @param pwd
+     */
     @Override
     public void login(String email, String pwd) {
         //Toast.makeText(this, "You have signed in", Toast.LENGTH_SHORT).show();
@@ -273,6 +304,9 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
         finish();*/
     }
 
+    /**
+     * Starts the RegisterActivity
+     */
     @Override
     public void register() {
         Intent i = new Intent(this, RegisterActivity.class);

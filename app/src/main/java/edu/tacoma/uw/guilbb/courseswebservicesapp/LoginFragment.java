@@ -42,6 +42,8 @@ import edu.tacoma.uw.guilbb.courseswebservicesapp.model.Member;
  * A simple {@link Fragment} subclass.
  * Use the {@link LoginFragment#newInstance} factory method to
  * create an instance of this fragment.
+ *
+ * This Fragment shows the details of the login screen
  */
 public class LoginFragment extends Fragment {
 
@@ -95,6 +97,10 @@ public class LoginFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * Creates the login fragment from the saved instance state
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +111,13 @@ public class LoginFragment extends Fragment {
 
     }
 
+    /**
+     * Sets up View for the login screen
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -181,7 +194,14 @@ public class LoginFragment extends Fragment {
         return v;
     }
 
+
     private class LoginMemberAsyncTask extends AsyncTask<String, Void, String> {
+
+        /**
+         * Sends login information to specified URL in JSON format
+         * @param urls
+         * @return
+         */
         @Override
         protected String doInBackground(String... urls) {
             String response = "";
@@ -224,6 +244,10 @@ public class LoginFragment extends Fragment {
             return response;
         }
 
+        /**
+         * Displays a Toast based on the results of the POST request
+         * @param s
+         */
         @Override
         protected void onPostExecute(String s) {
             if (s.startsWith("Unable to add the new course")) {
@@ -274,7 +298,12 @@ public class LoginFragment extends Fragment {
         }
     }*/
 
-
+    /**
+     * Constructs a JSON object of the user's email and password and executes an Async POST
+     * request to the backend db
+     * @param email
+     * @param password
+     */
     public void loginMember(String email, String password){
         StringBuilder url = new StringBuilder(getString(R.string.login));
         //Log.i(TAG, "entered registerMember method");
@@ -310,11 +339,15 @@ public class LoginFragment extends Fragment {
         onPostExecuteHelper(s);
     }
 
-
+    /**
+     * Asynchronously sends a member json string to the 'urls' specified.
+     *
+     * @param urls
+     * @return  the http response from the url
+     */
     protected String doInBackgroundHelper(String... urls) {
         String response = "";
         HttpURLConnection urlConnection = null;
-        Log.i(TAG, "In Helper");
         for (String url : urls) {
             try {
                 Log.i(TAG, url);
@@ -325,13 +358,8 @@ public class LoginFragment extends Fragment {
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setRequestProperty("Content-Type", "application/json");
                 urlConnection.connect();
-                Log.i(TAG, "Creating OutputStreamWriter");
                 OutputStreamWriter wr =
                         new OutputStreamWriter(urlConnection.getOutputStream());
-                Log.i(TAG, "OutputStreamWriter created");
-                // For Debugging
-                Log.i(TAG, "Printing Member JSON POST");
-                Log.i(LOGIN, mMemberJSON.toString());
                 wr.write(mMemberJSON.toString());
                 wr.flush();
                 wr.close();
@@ -343,11 +371,9 @@ public class LoginFragment extends Fragment {
                 while ((s = buffer.readLine()) != null) {
                     response += s;
                 }
-                Log.i(TAG, "BackendResponse: ");
-                Log.i(TAG, response);
 
             } catch (Exception e) {
-                response = "Unable to add the new course, Reason: "
+                response = "Unable to add the new User, Reason: "
                         + e.getMessage();
             } finally {
                 if (urlConnection != null)
@@ -357,6 +383,10 @@ public class LoginFragment extends Fragment {
         return response;
     }
 
+    /**
+     * Displays a Toast based on the results of the POST request
+     * @param s
+     */
     protected void onPostExecuteHelper(String s) {
         if (s.startsWith("Unable to add the new course")) {
             Toast.makeText(getActivity().getApplicationContext(), s, Toast.LENGTH_SHORT).show();
@@ -366,34 +396,22 @@ public class LoginFragment extends Fragment {
             JSONObject jsonObject = new JSONObject(s);
             myJsonObject = jsonObject;
             if (jsonObject.getBoolean("success")) {
-                Toast.makeText(getActivity().getApplicationContext(), "Course Added successfully"
+                Toast.makeText(getActivity().getApplicationContext(), "User Added successfully"
                         , Toast.LENGTH_SHORT).show();
                 isLoggedIn = true;
             }
             else {
-                Toast.makeText(getActivity().getApplicationContext(), "Course couldn't be added: "
+                Toast.makeText(getActivity().getApplicationContext(), "User couldn't be added: "
                                 + jsonObject.getString("error")
                         , Toast.LENGTH_LONG).show();
                 Log.e(LOGIN, jsonObject.getString("error"));
             }
         } catch (JSONException e) {
-            Toast.makeText(getActivity().getApplicationContext(), "JSON Parsing error on Adding course"
+            Toast.makeText(getActivity().getApplicationContext(), "JSON Parsing error on adding User"
                             + e.getMessage()
                     , Toast.LENGTH_LONG).show();
             Log.e(LOGIN, e.getMessage());
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
 }
 

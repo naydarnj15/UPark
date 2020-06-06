@@ -18,6 +18,15 @@ import edu.tacoma.uw.guilbb.courseswebservicesapp.model.Course;
  * A simple {@link Fragment} subclass.
  * Use the {@link ParkingAddFragment#newInstance} factory method to
  * create an instance of this fragment.
+ *
+ * This class is currently not used in the application
+ * Adding custom parking lots is now done through a request system to prevent abuse and duplicates
+ * of parking lots.
+ *
+ * If a user wants to add a parking lot, they can click the FAB on the map to request a lot at their
+ * current position.
+ *
+ * This class may be used in the future once a permissions/verification system is put in place for users
  */
 public class ParkingAddFragment extends Fragment {
 
@@ -57,6 +66,10 @@ public class ParkingAddFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * Creates the Parking add fragment from the saved instance state
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +80,13 @@ public class ParkingAddFragment extends Fragment {
         }
     }
 
+    /**
+     * Sets up View for the parking add screen
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

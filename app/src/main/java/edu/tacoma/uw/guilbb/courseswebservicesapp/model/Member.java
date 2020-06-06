@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+/**
+ * A class for building a member object to put into the database
+ */
 public class Member implements Serializable {
 
     private String email;

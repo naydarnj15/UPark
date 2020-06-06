@@ -8,6 +8,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A model of each parking lot
+ * NOTE: The "Course" name references are legacy code. All "Course" references can be thought of as
+ * "Parking Lot" references
+ *
+ */
 public class Course implements Serializable {
 
     private String mCourseId;
@@ -17,12 +23,12 @@ public class Course implements Serializable {
     private String mLat;
     private String mLong;
 
-    public static final String ID = "id";
-    public static final String SHORT_DESC = "shortdesc";
-    public static final String LONG_DESC = "longdesc";
-    public static final String PRE_REQS = "prereqs";
-    public static final String LAT = "lat";
-    public static final String LONG = "long";
+    public static final String ID = "id"; // Lot Name
+    public static final String SHORT_DESC = "shortdesc"; // Accessible parking availability
+    public static final String LONG_DESC = "longdesc"; // Parking Lot Price per hours
+    public static final String PRE_REQS = "prereqs"; // Parking Lot availability
+    public static final String LAT = "lat"; // Latitude of the lot
+    public static final String LONG = "long"; // Longitude of the lot
 
     public static final String AVAILABILITY = "availability";
 

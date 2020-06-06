@@ -115,6 +115,10 @@ import edu.tacoma.uw.guilbb.courseswebservicesapp.model.SignInActivity;
  * lead to a {@link ParkingDetailActivity} representing
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
+ *
+ * This activity displays a list of parking lots held in the database, as well as a map with markers
+ * representing each lot. Users can view details of the lot by selecting them from the list or by
+ * double tapping a marker on the map.
  */
 public class ParkingListActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -142,6 +146,10 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
     private String TAG = "ParkingListActivity";
     //ArrayAdapter<Course> adapter;
 
+    /**
+     * Creates the Parking List Activity from the saved instance state
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -310,6 +318,9 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
 
     }
 
+    /**
+    * Gets the current location of the user for requesting new parking lots
+    */
     //returns 404 404 if error
     private LatLng getLastKnownLocation() {
         Log.e(TAG, "getLastKnownLocation: called");
@@ -336,6 +347,9 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
         return yourLocation.getLatLng();
     }
 
+     /**
+     * Handles setting up the activity when it has been resumed
+     */
     @Override
     protected void onResume(){
         /*super.onResume();
@@ -372,6 +386,9 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
     }
 
 
+    /**
+    * Helper class to handle lat lng locations
+    */ 
     private class locationObject{
         double longitude = 404;
         double latitude= 404;
@@ -390,6 +407,9 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
 
     }
 
+    /**
+    * Starts the activity for adding a course.
+    */
     private void launchCourseAddFragment(){
         ParkingAddFragment courseAddFragment = new ParkingAddFragment();
         if(mTwoPane){
@@ -402,6 +422,10 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
         }
     }
 
+    /**
+     * Create a recycler view with the list of parking lots.
+     * @param recyclerView
+     */
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         if(mCourseList != null){
 //            adapter = new ArrayAdapter<>(this, R.layout.activity_item_list, mCourseList);
@@ -409,7 +433,6 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
 //            listView.setAdapter(adapter);
             adapter = new SimpleItemRecyclerViewAdapter(this, mCourseList, mTwoPane);
             mRecyclerView.setAdapter(adapter);
-
         }
 
     }
@@ -419,6 +442,12 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
         return true;
     }
 
+    /**
+     * Handles logic when a user selects an option bar item. This could be the search icon or the
+     * Sign Out button
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_logout) {
@@ -469,6 +498,11 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
 
     private class CoursesTask extends AsyncTask<String, Void, String> {
 
+        /**
+         * Sends login information to specified URL in JSON format
+         * @param urls
+         * @return
+         */
         @Override
         protected String doInBackground(String... urls) {
             String response = "";
@@ -499,6 +533,11 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
 
         }
 
+        /**
+         * Displays a Toast based on the results of the POST request. If the request was successful
+         * this method updates the local database with the new parking lots
+         * @param s
+         */
         @Override
         protected void onPostExecute(String s) {
             if (s.startsWith("Unable to")) {
@@ -593,6 +632,12 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
             return new ViewHolder(view);
         }
 
+        /**
+         * Populates the list view based on the data passed from the holder. Also formats icon colors
+         * based on parking lot availability
+         * @param holder
+         * @param position
+         */
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mIdView.setText(mValues.get(position).getmCourseId());
@@ -612,9 +657,6 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
                 //tint the icons red
                 holder.mParkingView.setColorFilter(Color.parseColor("#FFE91E63"));
             }
-
-
-
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
         }
@@ -633,6 +675,12 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
         Filter myFilter = new Filter() {
 
             //Automatic on background thread
+
+            /**
+             * Filters listView based on the charsequence passed in
+             * @param charSequence
+             * @return
+             */
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
 
@@ -680,8 +728,11 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
     }
 
 //------------------------------------------------------------------------------------------------
-    //void
 
+    /**
+     * Sets the initial position of the camera on the Google Map. Focused around the first parking
+     * lot in the mCourseListForGeo.
+     */
     private void setCameraView(){
 
         LatLng firstLotPosition = new LatLng(Double.parseDouble(mCourseListForGeo.get(0).getmLat()),
@@ -701,25 +752,29 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
         setMarkers();
     }
 
+    /**
+     * Places a map marker on each Parking lot
+     */
     private void setMarkers(){
         for(Course lot: mCourseListForGeo){
             //public final Course currentLot = lot;
             LatLng lotPosition = new LatLng(Double.parseDouble(lot.getmLat()), Double.parseDouble(lot.getmLong()));
             Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(lotPosition).title(lot.getmCourseId()));
-
-
-
-
         }
 
         final Context context = this;
 
         mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
 
+            /**
+             * Handles logic when a marker on the map is clicked. Begins the Parking Detail Activity
+             * of the selected parking lot if one was found.
+             * @param marker
+             */
             @Override
             public void onInfoWindowClick(Marker marker) {
 
-                Course clickedLot = mCourseListForGeo.get(0);// idk it was rly mad and wanted me to initalize
+                Course clickedLot = mCourseListForGeo.get(0);
                 boolean foundLot= false;
 
                 for(Course lot: mCourseListForGeo){
@@ -728,8 +783,6 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
                         foundLot = true;
                     }
                 }
-
-
 
                 if(foundLot){
                     foundLot = false;
@@ -758,32 +811,24 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
     }
 
 
-
+    /**
+     * Set up Google Map Window with API key
+     */
     private void initializeGoogleMap(Bundle savedInstanceState){
         Bundle mapViewBundle = null;
         if(savedInstanceState != null){
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
         }
-
         mMapView.onCreate(mapViewBundle);
         mMapView.getMapAsync(this);
-
-
     }
-
-
-    /*@Override
-    public void onResume(){
-        super.onResume();
-        mMapView.onResume();
-    }*/
 
     @Override
     public void onStop(){
         super.onStop();
         mMapView.onStop();
     }
-
+    
     @Override
     public void onMapReady(GoogleMap googleMap) {
         googleMap.addMarker(new MarkerOptions().position(new LatLng(0,0)).title("Marker"));
