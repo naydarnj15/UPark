@@ -34,17 +34,21 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;*/
 
+import android.Manifest;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,15 +59,20 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ListView;
+
 import androidx.appcompat.widget.SearchView;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -72,6 +81,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONException;
@@ -114,18 +125,23 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
     private SimpleItemRecyclerViewAdapter adapter;
     private ParkingDB mCourseDB;
 
+    private FusedLocationProviderClient mFusedLocationClient;
 
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     private MapView mMapView;
 
     private GoogleMap mGoogleMap;
     private LatLngBounds mMapBoundary;
+
+    private String TAG = "ParkingListActivity";
     //ArrayAdapter<Course> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_list);
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -180,9 +196,26 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
         mMapView = (MapView) findViewById(R.id.user_list_map);
 
         initializeGoogleMap(savedInstanceState);
+        getLastKnownLocation();
 
+    }
 
+    private void getLastKnownLocation() {
+        Log.e(TAG, "getLastKnownLocation: called");
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
+            return;
+        }
+        mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                if(task.isSuccessful()){
+                    Location location = task.getResult();
+                    Log.e(TAG, "onComplete: latitude: " + location.getLatitude() );
+                    Log.e(TAG, "onComplete: longitude: " + location.getLongitude() );
+                }
+            }
+        });
     }
 
     @Override
