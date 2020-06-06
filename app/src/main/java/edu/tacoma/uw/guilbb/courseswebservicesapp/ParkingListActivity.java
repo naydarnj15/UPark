@@ -321,7 +321,7 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
         mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful() && task.getResult() != null) {
                     Location location = task.getResult();
                     Log.e(TAG, "onComplete: latitude: " + location.getLatitude() );
                     Log.e(TAG, "onComplete: longitude: " + location.getLongitude() );
