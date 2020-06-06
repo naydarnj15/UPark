@@ -181,8 +181,14 @@ public class ParkingDetailActivity extends AppCompatActivity
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                String shareBody = "Your body here";
-                String shareSub = "Your Subject here";
+                String shareBody = "Parking Lot Availability!";
+                String shareSub;
+                try {
+                    shareSub = "Parking spots are available in the " + mCourseJSON.getString(Course.ID);
+                } catch(JSONException e){
+                    shareSub = "Lot not found error...";
+                }
+
                 intent.putExtra(Intent.EXTRA_SUBJECT, shareBody);
                 intent.putExtra(Intent.EXTRA_TEXT, shareSub);
                 startActivity(Intent.createChooser(intent, "ShareUsing"));
