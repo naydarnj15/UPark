@@ -2,7 +2,6 @@ package edu.tacoma.uw.guilbb.courseswebservicesapp.model;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,11 +24,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import edu.tacoma.uw.guilbb.courseswebservicesapp.LoginFragment;
-import edu.tacoma.uw.guilbb.courseswebservicesapp.ParkingAddFragment;
-import edu.tacoma.uw.guilbb.courseswebservicesapp.ParkingDetailActivity;
-import edu.tacoma.uw.guilbb.courseswebservicesapp.ParkingDetailFragment;
-import edu.tacoma.uw.guilbb.courseswebservicesapp.ParkingListActivity;
 import edu.tacoma.uw.guilbb.courseswebservicesapp.R;
 
 /**
@@ -183,8 +177,6 @@ public class RegisterActivity extends AppCompatActivity {
      */
     public void registerMember(String email, String password){
         StringBuilder url = new StringBuilder(getString(R.string.register_course));
-        //Log.i(TAG, "entered registerMember method");
-        //Construct a JSONObject to build a formatted message to send
         mMemberJSON = new JSONObject();
 
         try{

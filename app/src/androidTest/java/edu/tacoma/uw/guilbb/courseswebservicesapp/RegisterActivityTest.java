@@ -7,7 +7,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Random;
 import edu.tacoma.uw.guilbb.courseswebservicesapp.model.RegisterActivity;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -28,34 +27,6 @@ public class RegisterActivityTest {
     public ActivityTestRule<RegisterActivity> mActivityRule = new ActivityTestRule<>(
             RegisterActivity.class);
 
-
-//    @Test
-//    public void testLogin() {
-//        Random random = new Random();
-//        //Generate an email address
-//        String email = "email" + (random.nextInt(10000) + 1)
-//                + (random.nextInt(900) + 1) + (random.nextInt(700) + 1)
-//                + (random.nextInt(400) + 1) + (random.nextInt(100) + 1)
-//                + "@uw.edu";
-//        ;
-//
-//        // Type text and then press the button.
-//        onView(withId(R.id.add_email))
-//                .perform(typeText(email));
-//        onView(withId(R.id.add_password))
-//                .perform(typeText("test1@#"));
-//        onView(withId(R.id.btn_register))
-//                .perform(click());
-//
-//        onView(withText("User Added Successfully!"))
-//                .inRoot(withDecorView(not(is(
-//                        mActivityRule.getActivity()
-//                                .getWindow()
-//                                .getDecorView()))))
-//                .check(matches(isDisplayed()));
-//
-//
-//    }
 
     @Test
     public void testLoginInvalidEmail() {

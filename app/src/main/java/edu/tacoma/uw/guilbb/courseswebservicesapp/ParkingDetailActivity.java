@@ -2,15 +2,11 @@ package edu.tacoma.uw.guilbb.courseswebservicesapp;
 
 import android.app.Activity;
 import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -38,7 +34,6 @@ import java.net.URL;
 import java.util.List;
 
 import edu.tacoma.uw.guilbb.courseswebservicesapp.model.Course;
-import edu.tacoma.uw.guilbb.courseswebservicesapp.model.Member;
 
 import static edu.tacoma.uw.guilbb.courseswebservicesapp.App.CHANNEL_1_ID;
 

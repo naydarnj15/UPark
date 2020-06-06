@@ -131,15 +131,5 @@ public class MemberTest {
         assertEquals(false, isValidPassword("love"));
     }
 
-//    @Test
-//    public void testParseJsonException() throws JSONException {
-//        String json = "{"
-//                + " \"email\": \"mmuppa@uw.edu\","
-//                + " \"password\": \"superman@50\","
-//                + " }";
-//        List<Member> mList = new ArrayList<>();
-//        mList.add(new Member("mmuppa@uw.edu", "superman@50"));
-//        List<Member> memberList = parseCourseJson(json);
-//        assertEquals(mList, memberList);
-//    }
+
 }

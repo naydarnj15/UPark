@@ -4,8 +4,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,11 +15,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,7 +25,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
 import edu.tacoma.uw.guilbb.courseswebservicesapp.model.Member;
@@ -104,10 +96,6 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
 
     }
 
@@ -154,14 +142,6 @@ public class LoginFragment extends Fragment {
                     pwdTextf.requestFocus();
                 } else {
                     loginMember(email, pwd);
-                    //if(isLoggedIn){
-                        //mLoginFragmentListener.login(email, pwd);
-                       // isLoggedIn = false;
-                    //}else{
-                     //   Toast.makeText(v.getContext(), "Email or password not recognized!", Toast.LENGTH_SHORT).show();
-                        //e.printStackTrace();
-                    //}
-
                 }
             }
         });
@@ -260,8 +240,6 @@ public class LoginFragment extends Fragment {
      */
     public void loginMember(String email, String password){
         StringBuilder url = new StringBuilder(getString(R.string.login));
-        //Log.i(TAG, "entered registerMember method");
-        //Construct a JSONObject to build a formatted message to send
         mMemberJSON = new JSONObject();
         String response = "error";
         try{
@@ -273,10 +251,6 @@ public class LoginFragment extends Fragment {
             Log.i(TAG, "Starting Task...");
 
             String str_result= new LoginMemberAsyncTask().execute(url.toString()).get();
-            //while (str_result == null){
-
-            //}
-            //loginHelper(url.toString());
             Log.i(TAG, "Completed Task");
         }catch (JSONException e){
             //Toast.makeText(this, "Error with JSON creation on adding a course: " + e.getMessage(),Toast.LENGTH_SHORT).show();

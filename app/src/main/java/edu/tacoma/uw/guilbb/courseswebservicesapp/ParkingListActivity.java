@@ -1,54 +1,16 @@
 package edu.tacoma.uw.guilbb.courseswebservicesapp;
 
-/*import android.content.Context;
-import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.AsyncTask;
-import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import edu.tacoma.uw.guilbb.courseswebservicesapp.data.CourseDB;
-import edu.tacoma.uw.guilbb.courseswebservicesapp.model.Course;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.List;*/
 
 import android.Manifest;
-import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -57,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -93,8 +54,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -102,7 +61,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
 
 import edu.tacoma.uw.guilbb.courseswebservicesapp.data.ParkingDB;
 import edu.tacoma.uw.guilbb.courseswebservicesapp.model.Course;
@@ -130,7 +88,6 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
     private ListView listView;
     private List<Course> mCourseList;
     private List<Course> mCourseListForGeo;
-    //private List<Course> parkingList;
     private RecyclerView mRecyclerView;
     private SimpleItemRecyclerViewAdapter adapter;
     private ParkingDB mCourseDB;
@@ -144,7 +101,6 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
     private LatLngBounds mMapBoundary;
 
     private String TAG = "ParkingListActivity";
-    //ArrayAdapter<Course> adapter;
 
     /**
      * Creates the Parking List Activity from the saved instance state
@@ -198,42 +154,6 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
         requestLot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("text/plain");
-                String shareBody = "Your body here";
-                String shareSub = "Your Subject here";
-                intent.putExtra(Intent.EXTRA_SUBJECT, shareBody);
-                intent.putExtra(Intent.EXTRA_TEXT, shareSub);
-                startActivity(Intent.createChooser(intent, "ShareUsing"));*/
-
-                //-------------------------------------------------------------------------
-                //nvm have to pay
-                /*Geocoder geocoder;
-                List<Address> addresses;
-                addresses = new ArrayList<Address>();
-                geocoder = new Geocoder(context, Locale.getDefault());
-                boolean gotAddress = false;
-
-                String address = ""; // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-                String city= "";
-                String state= "";
-                String country= "";
-                String postalCode= "";
-                String knownName= "";
-
-                try {
-                    addresses = geocoder.getFromLocation(myLocal.latitude, myLocal.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-                    gotAddress = true;
-                    address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-                    city = addresses.get(0).getLocality();
-                    state = addresses.get(0).getAdminArea();
-                    country = addresses.get(0).getCountryName();
-                    postalCode = addresses.get(0).getPostalCode();
-                    knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }*/
 
 
                 // 1. Instantiate an <code><a href="/reference/android/app/AlertDialog.Builder.html">AlertDialog.Builder</a></code> with its constructor

@@ -13,27 +13,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import edu.tacoma.uw.guilbb.courseswebservicesapp.LoginFragment;
-import edu.tacoma.uw.guilbb.courseswebservicesapp.ParkingAddFragment;
-import edu.tacoma.uw.guilbb.courseswebservicesapp.ParkingDetailActivity;
 import edu.tacoma.uw.guilbb.courseswebservicesapp.ParkingListActivity;
 import edu.tacoma.uw.guilbb.courseswebservicesapp.R;
 
@@ -41,16 +28,10 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-
 /**
  * An activity representing the sign in page. Handles all permissions of the app (since it is the
  * first screen user will see on install), and allows users to sign in with their account, or to
@@ -65,7 +46,6 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
     public static final String LOGIN = "LOGIN";
     public CallbackManager callbackManager;
     private boolean mLocalPermGranted = false;
-    //private FusedLocationProviderClient mFusedLocationClient;
 
 
 
@@ -82,15 +62,11 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_sign_in);
-        //FacebookSdk.sdkInitialize(getApplicationContext());
-        //AppEventsLogger.activateApp(this);
         callbackManager = CallbackManager.Factory.create();
-        //LoginButton facebookBtn = findViewById(R.id.login_button);
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        // App code
                         Intent intent = new Intent(getApplicationContext(), ParkingListActivity.class);
                         startActivity(intent);
                         finish();
@@ -98,12 +74,10 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
 
                     @Override
                     public void onCancel() {
-                        // App code
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
-                        // App code
                     }
 
                 });
@@ -124,7 +98,6 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
             finish();
         }
 
-//
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
@@ -299,9 +272,6 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
                 getLocationPermission();
             }
         }
-        /*Intent i = new Intent(this, ParkingListActivity.class);
-        startActivity(i);
-        finish();*/
     }
 
     /**
