@@ -98,6 +98,10 @@ import edu.tacoma.uw.guilbb.courseswebservicesapp.model.SignInActivity;
  * lead to a {@link ParkingDetailActivity} representing
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
+ *
+ * This activity displays a list of parking lots held in the database, as well as a map with markers
+ * representing each lot. Users can view details of the lot by selecting them from the list or by
+ * double tapping a marker on the map.
  */
 public class ParkingListActivity extends AppCompatActivity implements OnMapReadyCallback {
 

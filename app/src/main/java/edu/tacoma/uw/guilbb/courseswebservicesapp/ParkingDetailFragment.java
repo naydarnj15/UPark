@@ -31,6 +31,9 @@ import edu.tacoma.uw.guilbb.courseswebservicesapp.model.Course;
  * This fragment is either contained in a {@link ParkingListActivity}
  * in two-pane mode (on tablets) or a {@link ParkingDetailActivity}
  * on handsets.
+ *
+ * This displays the details of a single parking lot. Includes information about pricing, name,
+ * and lot availability. Also gives users the ability to update lot availability
  */
 public class ParkingDetailFragment extends Fragment {
 

@@ -5,6 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+
+/**
+ * This activity allows the app to send notifications to the device
+ */
 public class NotificationActivity extends AppCompatActivity {
 
     /**

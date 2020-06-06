@@ -42,6 +42,8 @@ import edu.tacoma.uw.guilbb.courseswebservicesapp.model.Member;
  * A simple {@link Fragment} subclass.
  * Use the {@link LoginFragment#newInstance} factory method to
  * create an instance of this fragment.
+ *
+ * This Fragment shows the details of the login screen
  */
 public class LoginFragment extends Fragment {
 
