@@ -14,6 +14,10 @@ public class App extends Application {
         super.onCreate();
         createNotificationChannels();
     }
+
+    /**
+     * Creates all necessary notification channels for user alerts
+     */
     private void createNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel1 = new NotificationChannel(
