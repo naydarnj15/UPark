@@ -39,7 +39,10 @@ public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "DisplayMessageActivity";
 
 
-
+    /**
+     * Creates the Register Activity from the saved instance state
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +95,11 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Returns to the sign in page if the back button is clicked
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent myIntent = new Intent(getApplicationContext(), SignInActivity.class);
@@ -104,6 +112,11 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private class RegisterMemberAsyncTask extends AsyncTask<String, Void, String> {
+        /**
+         * Sends login information to specified URL in JSON format
+         * @param urls
+         * @return
+         */
         @Override
         protected String doInBackground(String... urls) {
             String response = "";
@@ -143,6 +156,11 @@ public class RegisterActivity extends AppCompatActivity {
             return response;
         }
 
+        /**
+         * Displays a Toast based on the results of the POST request, and returns the user to the
+         * Sign In activity if they were successfully registered
+         * @param s
+         */
         @Override
         protected void onPostExecute(String s) {
             if (s.startsWith("Unable to add the new course")) {
@@ -172,6 +190,12 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Creates a JSON Member Object based on the inputted email and password and sends it to
+     * the backend to try to create a new user.
+     * @param email
+     * @param password
+     */
     public void registerMember(String email, String password){
         StringBuilder url = new StringBuilder(getString(R.string.register_course));
         //Log.i(TAG, "entered registerMember method");
