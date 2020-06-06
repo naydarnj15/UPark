@@ -48,6 +48,8 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 
 
 public class SignInActivity extends AppCompatActivity implements LoginFragment.LoginFragmentListener, LoginFragment.RegisterFragmentListener {
@@ -58,6 +60,9 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
     public static final String LOGIN = "LOGIN";
     public CallbackManager callbackManager;
     private boolean mLocalPermGranted = false;
+    //private FusedLocationProviderClient mFusedLocationClient;
+
+
 
     public static final int ERROR_DIALOG_REQUEST = 9001;
     public static final int PERMISSIONS_REQUEST_ENABLE_GPS = 9002;
@@ -73,7 +78,7 @@ public class SignInActivity extends AppCompatActivity implements LoginFragment.L
 //                getLocationPermission();
 //            }
 //        }
-
+        //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         setContentView(R.layout.activity_sign_in);
         //FacebookSdk.sdkInitialize(getApplicationContext());
         //AppEventsLogger.activateApp(this);
