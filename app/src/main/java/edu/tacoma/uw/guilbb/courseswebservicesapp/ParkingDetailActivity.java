@@ -233,11 +233,7 @@ public class ParkingDetailActivity extends AppCompatActivity
         }
 
         Log.i(TAG, "running");
-        //View v = inflater.inflate(R.layout.activity_item_detail, container, false);
 
-        //View v = inflater.inflate(R.layout.activity_item_detail, container, false);
-        //public static final String ARG_ITEM_ID = "item_id";
-        //mItem = (Course) getArguments().getSerializable(ARG_ITEM_ID);
         final Course thisCourse = (Course) getIntent().getSerializableExtra(ParkingDetailFragment.ARG_ITEM_ID);
         updateCourse = thisCourse;
         Activity v = this;
@@ -417,75 +413,6 @@ public class ParkingDetailActivity extends AppCompatActivity
     }
 
 
-
-
-
-    /*private class RegisterMemberAsyncTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... urls) {
-            String response = "";
-            HttpURLConnection urlConnection = null;
-            for (String url : urls) {
-                try {
-                    URL urlObject = new URL(url);
-                    urlConnection = (HttpURLConnection) urlObject.openConnection();
-                    urlConnection.setRequestMethod("POST");
-                    urlConnection.setRequestProperty("Content-Type", "application/json");
-                    urlConnection.setDoOutput(true);
-                    OutputStreamWriter wr =
-                            new OutputStreamWriter(urlConnection.getOutputStream());
-
-                    // For Debugging
-                    Log.i(REGISTER_MEMBER, mMemberJSON.toString());
-                    wr.write(mMemberJSON.toString());
-                    wr.flush();
-                    wr.close();
-
-                    InputStream content = urlConnection.getInputStream();
-
-                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                    String s = "";
-                    while ((s = buffer.readLine()) != null) {
-                        response += s;
-                    }
-
-                } catch (Exception e) {
-                    response = "Unable to add the new course, Reason: "
-                            + e.getMessage();
-                } finally {
-                    if (urlConnection != null)
-                        urlConnection.disconnect();
-                }
-            }
-            return response;
-        }
-        @Override
-        protected void onPostExecute(String s) {
-            if (s.startsWith("Unable to add the new course")) {
-                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
-                return;
-            }
-            try {
-                JSONObject jsonObject = new JSONObject(s);
-                if (jsonObject.getBoolean("success")) {
-                    Toast.makeText(getApplicationContext(), "Course Added successfully"
-                            , Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Course couldn't be added: "
-                                    + jsonObject.getString("error")
-                            , Toast.LENGTH_LONG).show();
-                    Log.e(ADD_COURSE, jsonObject.getString("error"));
-                }
-            } catch (JSONException e) {
-                Toast.makeText(getApplicationContext(), "JSON Parsing error on Adding course"
-                                + e.getMessage()
-                        , Toast.LENGTH_LONG).show();
-                Log.e(ADD_COURSE, e.getMessage());
-            }
-        }
-    }*/
-
     /**
      * Builds a JSON Object based on the 'course' and As
      * @param course
@@ -534,24 +461,6 @@ public class ParkingDetailActivity extends AppCompatActivity
         }
     }
 
-    /*public void registerMember(Member member){
-        StringBuilder url = new StringBuilder(getString(R.string.register_course));
-
-        //Construct a JSONObject to build a formatted message to send
-        mCourseJSON = new JSONObject();
-        try{
-            mCourseJSON.put(Member.NAME, member.getmName());
-            mCourseJSON.put(Member.EMAIL, member.getmEmail());
-            mCourseJSON.put(Member.PASSWORD, member.getmPassword());
-            mCourseJSON.put(Member.USERNAME, member.getmUsername());
-            new UpdateCourseAsyncTask().execute(url.toString());
-
-        }catch (JSONException e){
-            Toast.makeText(this, "Error with JSON creation on adding a course: "
-                            + e.getMessage()
-                    ,Toast.LENGTH_SHORT).show();
-        }
-    }*/
 
     /**
      * Updates whether or not there is available accessible parking in a given parking lot (course)

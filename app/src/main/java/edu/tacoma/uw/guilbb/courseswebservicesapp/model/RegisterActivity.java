@@ -53,26 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-//        ParkingAddFragment courseAddFragment = new ParkingAddFragment();
-//        getSupportFragmentManager().beginTransaction()
-//                .replace(R.id.item_detail_container, courseAddFragment).commit();
-//        Intent i = new Intent(this, ParkingListActivity.class);
-//        startActivity(i);
-//        finish();
-
-//        ParkingAddFragment fragment = new ParkingAddFragment();
-//        //myFragment = fragment;
-//        getSupportFragmentManager().beginTransaction()
-//                .add(R.id.item_detail_container, fragment)
-//                .commit();
-
-        //final Member thisMember = (Member) getIntent().getSerializableExtra(ParkingDetailFragment.ARG_ITEM_ID);
-
-
-        //final EditText firstNameEditText = this.findViewById(R.id.add_first_name);
-        //final EditText lastNameEditText = this.findViewById(R.id.add_last_name);
         final EditText emailEditText = this.findViewById(R.id.add_email);
-        //final EditText usernameEditText = this.findViewById(R.id.add_username);
         final EditText passwordEditText = this.findViewById(R.id.add_password);
 
 

@@ -79,11 +79,6 @@ public class ParkingDB {
         return rowId != -1;
     }
 
-    /*public boolean updateAvailability(String id, String availability){
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("prereqs", availability);
-        long rowId = mSQLiteDatabase.update("Course", contentValues, "WHERE id ="+id, String[] whereArgs );
-    }*/
 
     /**
      * Delete all the data from the Courses

@@ -38,7 +38,6 @@ public class CourseContent {
         return new Course("Id" + position, "short desc " + position,
                 "Long desc" + position, "Pre reqs" + position,
                 Course.LAT + position, Course.LONG + position);
-                //,"availability" + position);
     }
 
     private static String makeDetails(int position) {

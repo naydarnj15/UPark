@@ -133,32 +133,6 @@ public class LoginFragment extends Fragment {
 
         Button loginButton = v.findViewById(R.id.btn_sign_in);
         Button registerButton = v.findViewById(R.id.btn_create_acc);
-//        LoginButton facebookButton = v.findViewById(R.id.login_button);
-//
-//        //facebookButton.setReadPermissions("user_friends");
-//        facebookButton.setFragment(this);
-//        //callbackManager = CallbackManager.Factory.create();
-//        //LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
-//
-//        facebookButton.registerCallback(callbackManager,
-//                new FacebookCallback<LoginResult>() {
-//                    @Override
-//                    public void onSuccess(LoginResult loginResult) {
-//                        // App code
-//
-//                    }
-//
-//                    @Override
-//                    public void onCancel() {
-//                        // App code
-//                    }
-//
-//                    @Override
-//                    public void onError(FacebookException exception) {
-//                        // App code
-//                    }
-//
-//                });
 
 
         registerButton.setOnClickListener(new View.OnClickListener() {
@@ -277,26 +251,6 @@ public class LoginFragment extends Fragment {
         }
     }
 
-
-    /*public void loginMember(String email, String password){
-        StringBuilder url = new StringBuilder(getString(R.string.login));
-        //Log.i(TAG, "entered registerMember method");
-        //Construct a JSONObject to build a formatted message to send
-        mMemberJSON = new JSONObject();
-        String response = "error";
-        try{
-
-            Log.i(TAG, "entered loginMember method");
-            mMemberJSON.put(Member.EMAIL, email);
-            mMemberJSON.put(Member.PASSWORD, password);
-            Log.i(TAG, "Put Email/Pass into MemberJSON");
-            Log.i(TAG, "Starting Async Task...");
-            new LoginMemberAsyncTask().execute(url.toString());
-            Log.i(TAG, "Completed Async Task");
-        }catch (JSONException e){
-            //Toast.makeText(this, "Error with JSON creation on adding a course: " + e.getMessage(),Toast.LENGTH_SHORT).show();
-        }
-    }*/
 
     /**
      * Constructs a JSON object of the user's email and password and executes an Async POST

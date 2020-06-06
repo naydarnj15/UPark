@@ -163,35 +163,6 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         toolbar.setTitle(getTitle());
 
-        /*ParkingMapFragment fragment = new ParkingMapFragment();
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.item_detail_container, fragment)
-                .commit();*/
-
-        //listView = findViewById(R.id.myListView);
-        //mCourseList = new ArrayList<>();
-        //parkingList = new ArrayList<>();
-//        adapter = new ArrayAdapter<>(this, R.layout.activity_item_list, parkingList);
-//
-//        listView.setAdapter(adapter);
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                launchCourseAddFragment();
-//            }
-//        });
-
-        /*
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-         */
-
         if (findViewById(R.id.item_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
@@ -220,6 +191,10 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
         final Context context = this;
 
         FloatingActionButton requestLot = (FloatingActionButton) findViewById(R.id.request_lot);
+
+        // This block of commented code uses GeoCoder to convert from the LatLng to an actual human
+        //  readable address. Unfortunately we discovered that Geocoder is a paid service, so we
+        //  disabled it in this version.
         requestLot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -261,8 +236,6 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
                 }*/
 
 
-                //------------------------------------------------------------------------------
-
                 // 1. Instantiate an <code><a href="/reference/android/app/AlertDialog.Builder.html">AlertDialog.Builder</a></code> with its constructor
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
@@ -290,26 +263,12 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
                     intent.putExtra(Intent.EXTRA_EMAIL,shareEmail );
                     startActivity(Intent.createChooser(intent, "ShareUsing"));
 
-                    /*final Intent intent = new Intent(Intent.ACTION_VIEW)
-                            .setType("plain/text")
-                            .setData(Uri.parse("test@gmail.com"))
-                            .setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail")
-                            .putExtra(Intent.EXTRA_EMAIL, new String[]{"test@gmail.com"})
-                            .putExtra(Intent.EXTRA_SUBJECT, "test")
-                            .putExtra(Intent.EXTRA_TEXT, "hello. this is a message sent from my demo app :-)");
-                    startActivity(intent);*/
-
                     builder.setMessage("Your request to add a new parking lot at your current location-- latitude: "
                             + myLocal.latitude+ " and longitude: " + myLocal.longitude+
                             " will be reviewed by our team!\n")
                             .setTitle(R.string.dialog_title);
 
                 }
-
-
-
-
-
                 // 3. Get the <code><a href="/reference/android/app/AlertDialog.html">AlertDialog</a></code> from <code><a href="/reference/android/app/AlertDialog.Builder.html#create()">create()</a></code>
                 AlertDialog dialog = builder.create();
                 dialog.show();
@@ -481,17 +440,6 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
                 }
             });
         }
-//        if (item.getItemId() == R.id.share) {
-//            Intent intent = new Intent(Intent.ACTION_SEND);
-//            intent.setType("text/plain");
-//            String shareBody = "Your body here";
-//            String shareSub = "Your Subject here";
-//            intent.putExtra(Intent.EXTRA_SUBJECT, shareBody);
-//            intent.putExtra(Intent.EXTRA_TEXT, shareSub);
-//            startActivity(Intent.createChooser(intent, "ShareUsing"));
-//        }
-
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -584,7 +532,6 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
         }
 
     }
-
 
 
     public static class SimpleItemRecyclerViewAdapter
