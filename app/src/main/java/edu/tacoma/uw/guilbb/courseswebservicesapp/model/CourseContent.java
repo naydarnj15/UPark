@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A class to help put parking lots into the database
+ */
 public class CourseContent {
 
     /**

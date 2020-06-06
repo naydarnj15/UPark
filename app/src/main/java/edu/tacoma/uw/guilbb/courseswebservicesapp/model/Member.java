@@ -8,6 +8,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class for building a member object to put into the database
+ */
 public class Member implements Serializable {
 
 //    private String first_name;

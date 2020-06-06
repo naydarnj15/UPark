@@ -49,6 +49,11 @@ import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+/**
+ * An activity representing the sign in page. Handles all permissions of the app (since it is the
+ * first screen user will see on install), and allows users to sign in with their account, or to
+ * create a new account.
+ */
 
 public class SignInActivity extends AppCompatActivity implements LoginFragment.LoginFragmentListener, LoginFragment.RegisterFragmentListener {
 

@@ -13,6 +13,10 @@ import java.util.List;
 import edu.tacoma.uw.guilbb.courseswebservicesapp.R;
 import edu.tacoma.uw.guilbb.courseswebservicesapp.model.Course;
 
+
+/**
+ * A database containing all the parking lots used in the UPark app
+ */
 public class ParkingDB {
     public static final int DB_VERSION = 4;
     public static final String DB_NAME = "Parking.db";

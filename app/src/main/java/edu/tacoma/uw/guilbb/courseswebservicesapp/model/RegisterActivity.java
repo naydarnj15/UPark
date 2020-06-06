@@ -32,6 +32,10 @@ import edu.tacoma.uw.guilbb.courseswebservicesapp.ParkingDetailFragment;
 import edu.tacoma.uw.guilbb.courseswebservicesapp.ParkingListActivity;
 import edu.tacoma.uw.guilbb.courseswebservicesapp.R;
 
+/**
+ * An activity representing the register page. Allows users to create a new account with a valid
+ * email and password. Basic email and password validation is done here.
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     public static final String REGISTER_MEMBER = "REGISTER_MEMBER";
