@@ -269,6 +269,27 @@ public class ParkingListActivity extends AppCompatActivity implements OnMapReady
                     builder.setMessage("Your lot request was not set because we could not determine your location")
                             .setTitle("We could not locate you!");
                 }else{
+
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    String shareBody = "Please consider a parking lot at latitude: "+ myLocal.latitude+
+                            " longitude: "+ myLocal.longitude;
+                    String shareSub = "Parking Lot Request";
+                    String shareEmail = "UParkDevelopers@gmail.com";
+                    intent.putExtra(Intent.EXTRA_SUBJECT, shareBody);
+                    intent.putExtra(Intent.EXTRA_TEXT, shareSub);
+                    intent.putExtra(Intent.EXTRA_EMAIL,shareEmail );
+                    startActivity(Intent.createChooser(intent, "ShareUsing"));
+
+                    /*final Intent intent = new Intent(Intent.ACTION_VIEW)
+                            .setType("plain/text")
+                            .setData(Uri.parse("test@gmail.com"))
+                            .setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail")
+                            .putExtra(Intent.EXTRA_EMAIL, new String[]{"test@gmail.com"})
+                            .putExtra(Intent.EXTRA_SUBJECT, "test")
+                            .putExtra(Intent.EXTRA_TEXT, "hello. this is a message sent from my demo app :-)");
+                    startActivity(intent);*/
+
                     builder.setMessage("Your request to add a new parking lot at your current location-- latitude: "
                             + myLocal.latitude+ " and longitude: " + myLocal.longitude+
                             " will be reviewed by our team!\n\n We appreciate your input!")
